@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--maven父包管理使用pom-->
+    <packaging>pom</packaging>
+
+    <!--模块-->
+    <modules>
+        <!--控制层-->
+        <module>wmall-web</module>
+        <!--业务逻辑层-->
+        <module>wmall-service</module>
+        <!--数据库操作层-->
+        <module>wmall-dao</module>
+        <!--公共工具模块-->
+        <module>wmall-common</module>
+        <!--实体类层-->
+        <module>wmall-model</module>
+    </modules>
+
+    <!--spring boot父类-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.9.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <!--主项目信息-->
+    <groupId>com.actstrady</groupId>
+    <artifactId>wmall</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>wmall</name>
+    <description>personalized recommendation mall</description>
+
+    <properties>
+        <!--定义所有用到的依赖的版本-->
+        <java.version>11</java.version>
+    </properties>
+    <!--使用主pom管理全部模块依赖的方式进行管理，
+    父模块只提供版本定义，所以子模块需要用的时候自己引用，只是不需要写版本号-->
+    <dependencyManagement>
+        <dependencies>
+            <!--子模块的版本交给主模块处理-->
+            <dependency>
+                <groupId>com.actstrady</groupId>
+                <artifactId>wmall-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.actstrady</groupId>
+                <artifactId>wmall-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.actstrady</groupId>
+                <artifactId>wmall-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.actstrady</groupId>
+                <artifactId>wmall-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.actstrady</groupId>
+                <artifactId>wmall-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--其余这些统统交给子模块，用那个引用那个-->
+            <!--jpa-->
+            <!--<dependency>-->
+            <!--    <groupId>org.springframework.boot</groupId>-->
+            <!--    <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>org.springframework.boot</groupId>-->
+            <!--    <artifactId>spring-boot-starter-webflux</artifactId>-->
+            <!--</dependency>-->
+
+            <!--<dependency>-->
+            <!--    <groupId>mysql</groupId>-->
+            <!--    <artifactId>mysql-connector-java</artifactId>-->
+            <!--    <scope>runtime</scope>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>org.projectlombok</groupId>-->
+            <!--    <artifactId>lombok</artifactId>-->
+            <!--    <optional>true</optional>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>org.springframework.boot</groupId>-->
+            <!--    <artifactId>spring-boot-starter-test</artifactId>-->
+            <!--    <scope>test</scope>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>io.projectreactor</groupId>-->
+            <!--    <artifactId>reactor-test</artifactId>-->
+            <!--    <scope>test</scope>-->
+            <!--</dependency>-->
+        </dependencies>
+    </dependencyManagement>
+
+    <!--父pom不负责打包，只负责依赖管理-->
+    <!--<build>-->
+    <!--    <plugins>-->
+    <!--        <plugin>-->
+    <!--            <groupId>org.springframework.boot</groupId>-->
+    <!--            <artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--        </plugin>-->
+    <!--    </plugins>-->
+    <!--</build>-->
+</project>
