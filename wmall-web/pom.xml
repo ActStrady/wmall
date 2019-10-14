@@ -16,12 +16,10 @@
             <groupId>com.actstrady</groupId>
             <artifactId>wmall-service</artifactId>
         </dependency>
-
-        <!--spring boot reactor web提供的依赖-->
-        <!--web flux-->
+        <!--spring boot web提供的依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!--spring boot test依赖-->
         <dependency>

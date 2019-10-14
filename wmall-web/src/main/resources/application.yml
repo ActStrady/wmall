@@ -1,0 +1,12 @@
+#\u914D\u7F6E\u6570\u636E\u5E93
+#\u6570\u636E\u5E93\u57FA\u7840\u914D\u7F6E
+spring:
+  datasource:
+    # \u6570\u636E\u6E90\u7C7B\u578B
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql:///wmall
+    username: root
+    password: root
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialec.MySQL5InnoDBDialect
