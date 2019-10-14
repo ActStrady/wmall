@@ -16,13 +16,4 @@ import reactor.core.publisher.Mono;
  */
 @Configuration
 public class UserHandler {
-    @Bean
-    public RouterFunction<ServerResponse> userRoute() {
-        return RouterFunctions.route(RequestPredicates.GET("/user"),
-                request -> {
-                    UserPO userPO = new UserPO("1", "1", "1", "1");
-                    Mono<UserPO> userPOMono = Mono.just(userPO);
-                    return ServerResponse.ok().body(userPOMono, UserPO.class);
-        });
-    }
 }
