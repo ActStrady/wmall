@@ -1,5 +1,6 @@
 package po;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.PrimitiveIterator;
@@ -11,9 +12,10 @@ import java.util.PrimitiveIterator;
  * @gitHub : https://github.com/ActStrady/wmall
  */
 @Data
+@AllArgsConstructor
 public class UserPO {
     private String username;
-    private String passweord;
+    private String password;
     private String name;
     private String email;
 }
