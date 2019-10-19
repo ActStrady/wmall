@@ -12,5 +12,4 @@ public class WmallApplicationTests {
     @Test
     public void contextLoads() {
     }
-
 }
