@@ -12,16 +12,26 @@
     <artifactId>wmall-common</artifactId>
 
     <dependencies>
-        <!--权限管理-->
+        <!--需要注入暂时这样-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
-        <!--权限管理测试-->
+        <!--&lt;!&ndash;权限管理&ndash;&gt;-->
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-security</artifactId>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash;权限管理测试&ndash;&gt;-->
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.security</groupId>-->
+        <!--    <artifactId>spring-security-test</artifactId>-->
+        <!--    <scope>test</scope>-->
+        <!--</dependency>-->
+        <!--lombok-->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

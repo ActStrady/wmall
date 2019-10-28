@@ -2,6 +2,8 @@ package com.actstrady.wmall.service;
 
 import com.actstrady.wmall.dao.UserDao;
 import com.actstrady.wmall.po.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,12 +15,6 @@ import java.util.List;
  * @fileName : UserService.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-@Service
-public class UserService {
-    @Resource
-    private UserDao userDao;
-
-    public List<User> getAll() {
-        return userDao.findAll();
-    }
+public interface UserService {
+    User login(User user);
 }
