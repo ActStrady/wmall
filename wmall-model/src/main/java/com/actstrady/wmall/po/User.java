@@ -1,8 +1,6 @@
 package com.actstrady.wmall.po;
 
-import lombok.Cleanup;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,8 +15,7 @@ import java.util.Date;
  * @gitHub : https://github.com/ActStrady/wmall
  */
 @Data
-@RequiredArgsConstructor
-@Entity(name = "user")
+@Entity
 public class User {
     /**
      * mysql 使用GenerationType.IDENTITY规则主键自增

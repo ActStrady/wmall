@@ -2,8 +2,6 @@ package com.actstrady.wmall.dao;
 
 import com.actstrady.wmall.po.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.stereotype.Component;
 
 /**
  * 使用RepositoryRestResource注解表示自定义路径
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @fileName : UserDao.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-@RepositoryRestResource(path = "user")
 public interface UserDao extends JpaRepository<User, Integer> {
     User getUserByUsernameAndPassword(String username, String password);
+    User getUserByUsername(String username);
 }

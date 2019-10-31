@@ -4,11 +4,7 @@ import com.actstrady.wmall.dao.UserDao;
 import com.actstrady.wmall.po.User;
 import com.actstrady.wmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author : ActStrady@tom.com
@@ -28,5 +24,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(User user) {
         return userDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+    }
+
+    @Override
+    public Boolean checkUsername(String username) {
+        return userDao.getUserByUsername(username) == null;
+    }
+
+    @Override
+    public Boolean registered(User user) {
+        User saveUser = userDao.save(user);
+        return saveUser != null;
     }
 }
