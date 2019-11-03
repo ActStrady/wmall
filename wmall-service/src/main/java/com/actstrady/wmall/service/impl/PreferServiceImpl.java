@@ -1,19 +1,24 @@
 package com.actstrady.wmall.service.impl;
 
-import com.iflysse.mapper.PreferMapper;
-import com.iflysse.pojo.Prefer;
-import com.iflysse.service.PreferService;
-import com.iflysse.viewmodel.PreferViewModel.PreferList;
+import com.actstrady.wmall.dao.PreferDao;
+import com.actstrady.wmall.po.Prefer;
+import com.actstrady.wmall.service.PreferService;
+import com.actstrady.wmall.vo.PreferList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class PreferServiceImpl implements PreferService {
+    private final PreferDao preferDao;
+
     @Autowired
-    private PreferMapper preferMapper;
+    public PreferServiceImpl(PreferDao preferDao) {
+        this.preferDao = preferDao;
+    }
 
     private List<PreferList> buildPreferList(List<Prefer> prefers){
         if(prefers==null || prefers.size()==0){
@@ -39,11 +44,15 @@ public class PreferServiceImpl implements PreferService {
 
     @Override
     public List<PreferList> getByUserId(int userId){
-        return buildPreferList(preferMapper.getByUserId(userId));
+        return buildPreferList(preferDao.getByUserId(userId));
     }
 
     @Override
     public void insertInfo(int userId,int categoryId){
-        preferMapper.insertInfo(userId,categoryId);
+        Prefer prefer = new Prefer();
+        prefer.setUserId(userId);
+        prefer.setCategoryId(categoryId);
+        prefer.setCreateTime(new Date());
+        preferDao.save(prefer);
     }
 }

@@ -1,13 +1,17 @@
 package com.actstrady.wmall.web.controller;
 
 import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.service.PreferService;
 import com.actstrady.wmall.service.UserService;
+import com.actstrady.wmall.utils.Result;
+import com.actstrady.wmall.vo.PreferList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author : ActStrady@tom.com
@@ -17,29 +21,33 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping("user")
-@SessionAttributes("user")
 public class UserController {
     private final UserService userService;
+    private final PreferService preferService;
+    private final Result result;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, Result result, PreferService preferService) {
         this.userService = userService;
+        this.preferService = preferService;
+        this.result = result;
     }
 
     /**
      * 登录功能
      *
-     * @param userMod 前端传入的user
-     * @param model   spring的模型类
+     * @param userMod     前端传入的user
+     * @param httpSession spring的模型类
      * @return 成功就是用户的id，0表示失败
      */
     @PostMapping("login")
-    public Integer login(@RequestBody User userMod, Model model, HttpSession httpSession) {
+    public int login(@RequestBody User userMod, HttpSession httpSession) {
         User user = userService.login(userMod);
         if (user == null) {
             return 0;
         } else {
-            model.addAttribute("user", user);
+            // 保存到session
+            httpSession.setAttribute("user", user);
             return user.getId();
         }
     }
@@ -64,7 +72,7 @@ public class UserController {
      * @return 是否成功
      */
     @GetMapping("checkLogin")
-    public boolean isLogin(Model model, HttpSession httpSession) {
+    public boolean isLogin(Model model) {
         return model.getAttribute("user") != null;
     }
 
@@ -87,27 +95,31 @@ public class UserController {
      */
     @PostMapping("register")
     public Boolean register(@RequestBody User user) {
-        System.out.println(user);
         return userService.registered(user);
     }
 
-    // @RequestMapping("checkPrefer")
-    // public boolean checkPrefer(HttpSession httpSession) {
-    //     int userId=((UserList)httpSession.getAttribute("userList")).getUserId();
-    //     List<PreferList> prefers=preferService.getByUserId(userId);
-    //     if(prefers==null || prefers.size()==0){
-    //         return true;
-    //     }
-    //     else{
-    //         return false;
-    //     }
-    // }
+    /**
+     * 查询喜好列表
+     * @param httpSession
+     * @return
+     */
+    @GetMapping("checkPrefer")
+    public boolean checkPrefer(HttpSession httpSession) {
+        int userId = ((User) httpSession.getAttribute("user")).getId();
+        List<PreferList> prefers = preferService.getByUserId(userId);
+        return prefers == null || prefers.size() == 0;
+    }
 
-    // @RequestMapping("/user/addPrefer")
-    // public void  AddPrefer(@RequestBody List<PreferList> arrList, HttpSession httpSession) {
-    //     int userId=((UserList)httpSession.getAttribute("userList")).getUserId();
-    //     for (PreferList arr : arrList) {
-    //         preferService.insertInfo(userId,arr.getCategoryId());
-    //     }
-    // }
+    /**
+     * 插入喜好列表
+     * @param arrList
+     * @param httpSession
+     */
+    @GetMapping("addPrefer")
+    public void addPrefer(@RequestBody List<PreferList> arrList, HttpSession httpSession) {
+        int userId = ((User) httpSession.getAttribute("user")).getId();
+        for (PreferList arr : arrList) {
+            preferService.insertInfo(userId, arr.getCategoryId());
+        }
+    }
 }

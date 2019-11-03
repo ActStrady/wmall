@@ -1,124 +1,152 @@
 package com.actstrady.wmall.web.controller;
 
+import com.actstrady.wmall.po.User;
 import com.actstrady.wmall.service.*;
+import com.actstrady.wmall.utils.Constant;
+import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.EvaluateList;
 import com.actstrady.wmall.vo.Goods4List;
 import com.actstrady.wmall.vo.ParentCategory;
-import com.actstrady.wmall.vo.UserList;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequestMapping("home")
 public class HomeController {
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private GoodsService goodsService;
-    @Autowired
-    private EvaluateService evaluateService;
-    @Autowired
-    private HotGoodsService hotGoodsService;
-    @Autowired
-    private RecommendService recommendService;
-    @Autowired
-    private SimilarPurchasedService similarGoodsService;
-    /**
-     * 系统首页
-     * @param model ViewModel
-     * @return
-     */
-    @RequestMapping("/home")
-    public String index(Model model, HttpSession httpSession) {
-        List<ParentCategory> categories = categoryService.getCategories();
-        List<Goods4List> goods = goodsService.getAll(9, 0);
-        List<Goods4List> hotGoods = hotGoodsService.getTop();
-        List<Goods4List> newsGoods = goodsService.getNewsByTime();
-        model.addAttribute("categories", categories);
-        model.addAttribute("goods", goods);
-        model.addAttribute("hotGoods", hotGoods);
-        model.addAttribute("newsGoods", newsGoods);
-        List<Goods4List> recommendGoods=new ArrayList<>(0);
-        UserList user=new UserList();
-        if (httpSession.getAttribute("userList")!=null) {
-            user=(UserList)httpSession.getAttribute("userList");
-            int userId=user.getUserId();
-            recommendGoods=recommendService.getByUserId(userId);
-        }
-        model.addAttribute("userList", user);
-        model.addAttribute("recommendGoods", recommendGoods);
+    private final CategoryService categoryService;
+    private final GoodsService goodsService;
+    private final EvaluateService evaluateService;
+    private final HotGoodsService hotGoodsService;
+    private final RecommendService recommendService;
+    private final SimilarPurchasedService similarGoodsService;
+    // 封装结果集
+    private final Result result;
 
-        return "index";
+    @Autowired
+    public HomeController(CategoryService categoryService, GoodsService goodsService,
+                          EvaluateService evaluateService, HotGoodsService hotGoodsService,
+                          RecommendService recommendService, SimilarPurchasedService similarGoodsService,
+                          Result result) {
+        this.categoryService = categoryService;
+        this.goodsService = goodsService;
+        this.evaluateService = evaluateService;
+        this.hotGoodsService = hotGoodsService;
+        this.recommendService = recommendService;
+        this.similarGoodsService = similarGoodsService;
+        this.result = result;
     }
 
     /**
+     * 系统首页
      *
+     * @param model ViewModel
+     * @return
+     */
+    @GetMapping
+    public Result index(Model model, HttpSession httpSession) {
+        // 给前端返回的数据
+        Map<String, Object> homeMap = new HashMap<>(50);
+        // 菜单列表
+        List<ParentCategory> categories = categoryService.getCategories();
+        // 分页查询商品
+        List<Goods4List> goods = goodsService.getAll(9, 0);
+        // 获取热门商品
+        List<Goods4List> hotGoods = hotGoodsService.getTop();
+        // 获取商品列表
+        List<Goods4List> newsGoods = goodsService.getNewsByTime();
+
+        // 添加结果
+        homeMap.put("categories", categories);
+        homeMap.put("goods", goods);
+        homeMap.put("hotGoods", hotGoods);
+        homeMap.put("newsGoods", newsGoods);
+
+        // 通过用户来推荐
+        User user = new User();
+        if (httpSession.getAttribute(Constant.USER) != null) {
+            user = (User) httpSession.getAttribute(Constant.USER);
+            int userId = user.getId();
+            // 个性化推荐
+            List<Goods4List> recommendGoods = recommendService.getByUserId(userId);
+            homeMap.put("user", user);
+            homeMap.put("recommendGoods", recommendGoods);
+        }
+        result.setCode(Constant.ZERO);
+        result.setStatus(Constant.ZERO_SHORT);
+        result.setData(JSON.toJSONString(homeMap));
+        return result;
+    }
+
+    /**
      * @param model
      * @param categoryId
      * @param pageSize
      * @param pageIndex
      * @return
      */
-    @RequestMapping("/home/product/{cId}/{pageSize}/{pageIndex}")
-    public String Product(Model model, @PathVariable("cId") int categoryId,
-                          @PathVariable("pageSize") int pageSize, @PathVariable("pageIndex") int pageIndex,
-                          HttpSession httpSession){
+    @GetMapping("product/{cId}/{pageSize}/{pageIndex}")
+    public Result product(Model model, HttpSession httpSession,
+                          @PathVariable("cId") int categoryId,
+                          @PathVariable("pageSize") int pageSize,
+                          @PathVariable("pageIndex") int pageIndex) {
+        // 通过分类获取商品
         List<Goods4List> goods = goodsService.getByCategory(categoryId, pageSize, pageIndex);
-        model.addAttribute("goods", goods);
-        List<ParentCategory> categories = categoryService.getCategories();
-        model.addAttribute("categories", categories);
-        UserList user=new UserList();
-        if (httpSession.getAttribute("userList")!=null) {
-            user=((UserList)httpSession.getAttribute("userList"));
-        }
-        model.addAttribute("userList", user);
-        return "goods";
-    }
-    @RequestMapping("/home/product/search/{content}/{pageSize}/{pageIndex}")
-    public String ProductSearch(Model model, @PathVariable("content") String content,
-                                @PathVariable("pageSize") int pageSize, @PathVariable("pageIndex") int pageIndex, HttpSession httpSession){
-        List<Goods4List> goods = goodsService.getByName(content,pageSize,pageIndex);
-        model.addAttribute("goods", goods);
-        List<ParentCategory> categories = categoryService.getCategories();
-        model.addAttribute("categories", categories);
-        UserList user=new UserList();
-        if (httpSession.getAttribute("userList")!=null) {
-            user=((UserList)httpSession.getAttribute("userList"));
-        }
-        model.addAttribute("userList", user);
-        return "goods";
+        result.setCode(Constant.ZERO);
+        result.setStatus(Constant.ZERO_SHORT);
+        result.setData(JSON.toJSONString(goods));
+        return result;
     }
 
     /**
-     *物品详情页
+     * 搜索
+     *
+     * @param model
+     * @param content
+     * @param pageSize
+     * @param pageIndex
+     * @param httpSession
+     * @return
+     */
+    @RequestMapping("product/search/{content}/{pageSize}/{pageIndex}")
+    public Result productSearch(Model model, HttpSession httpSession,
+                                @PathVariable("content") String content,
+                                @PathVariable("pageSize") int pageSize,
+                                @PathVariable("pageIndex") int pageIndex) {
+        List<Goods4List> goods = goodsService.getByName(content, pageSize, pageIndex);
+        result.setCode(Constant.ZERO);
+        result.setStatus(Constant.ZERO_SHORT);
+        result.setData(JSON.toJSONString(goods));
+        return result;
+    }
+
+    /**
+     * 物品详情页
+     *
      * @param model
      * @param goodsId
      * @return
      */
-    @RequestMapping("/home/productView/{gId}")
-    public String ProductView(Model model, @PathVariable("gId") int goodsId, HttpSession httpSession){
+    @RequestMapping("productView/{gId}")
+    public Result productView(Model model, @PathVariable("gId") int goodsId, HttpSession httpSession) {
+        Map<String, Object> productMap = new HashMap<>();
         Goods4List goods = goodsService.getById(goodsId);
-        model.addAttribute("goods", goods);
-        List<EvaluateList> evaluates = evaluateService.getByGood(goodsId,10,0);
-        model.addAttribute("evaluates", evaluates);
+        // 评价信息
+        List<EvaluateList> evaluates = evaluateService.getByGood(goodsId, 10, 0);
+        // 同类型商品
         List<Goods4List> similarGoods = similarGoodsService.getByGoodsId(goodsId);
-        model.addAttribute("similarGoods", similarGoods);
-
-        List<ParentCategory> categories = categoryService.getCategories();
-        model.addAttribute("categories", categories);
-        UserList user=new UserList();
-        if (httpSession.getAttribute("userList")!=null) {
-            user=((UserList)httpSession.getAttribute("userList"));
-        }
-        model.addAttribute("userList", user);
-
-        return "detail";
+        productMap.put("goods", goods);
+        productMap.put("evaluates", evaluates);
+        productMap.put("similarGoods", similarGoods);
+        result.setCode(Constant.ZERO);
+        result.setStatus(Constant.ZERO_SHORT);
+        result.setData(JSON.toJSONString(productMap));
+        return result;
     }
-
 }

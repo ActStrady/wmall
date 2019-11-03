@@ -1,14 +1,12 @@
 package com.actstrady.wmall.service.impl;
 
-import com.iflysse.mapper.CategoryMapper;
-import com.iflysse.mapper.EvaluateMapper;
-import com.iflysse.mapper.GoodsCartMapper;
-import com.iflysse.mapper.GoodsMapper;
-import com.iflysse.pojo.Evaluate;
-import com.iflysse.pojo.Goods;
-import com.iflysse.pojo.GoodsCart;
-import com.iflysse.service.GoodsCartService;
-import com.iflysse.viewmodel.GoodsCartModel.GoodsCartList;
+import com.actstrady.wmall.dao.CategoryDao;
+import com.actstrady.wmall.dao.GoodsDao;
+import com.actstrady.wmall.po.Evaluate;
+import com.actstrady.wmall.po.Goods;
+import com.actstrady.wmall.po.GoodsCart;
+import com.actstrady.wmall.service.GoodsCartService;
+import com.actstrady.wmall.vo.GoodsCartList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +16,13 @@ import java.util.List;
 @Service
 public class GoodsCartServiceImpl implements GoodsCartService {
     @Autowired
-    private GoodsCartMapper goodsCartMapper;
+    private GoodsCaoartDao goodsCartDao;
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsDao goodsDao;
     @Autowired
-    private CategoryMapper categoryMapper;
+    private CategoryDao categoryDao;
     @Autowired
-    private EvaluateMapper evaluateMapper;
+    private Evaluatao evaluateDao;
 
     private List<GoodsCartList> buildGoodsCartList(List<GoodsCart> goodsCarts){
         if(goodsCarts==null || goodsCarts.size()==0){

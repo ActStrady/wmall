@@ -1,5 +1,6 @@
 package com.actstrady.wmall.service.impl;
 
+import com.actstrady.wmall.dao.GoodsDao;
 import com.actstrady.wmall.po.Goods;
 import com.actstrady.wmall.po.SimilarPurchased;
 import com.actstrady.wmall.service.SimilarPurchasedService;
@@ -13,7 +14,7 @@ import java.util.List;
 @Service
 public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsDao goodsDao;
     @Autowired
     private SimilarPurchasedMapper similarPurchasedMapper;
     @Autowired

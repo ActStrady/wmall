@@ -1,36 +1,35 @@
 package com.actstrady.wmall.web.controller;
 
-import com.iflysse.pojo.Evaluate;
-import com.iflysse.service.CategoryService;
-import com.iflysse.service.EvaluateService;
-import com.iflysse.service.GoodsCartService;
-import com.iflysse.service.GoodsService;
-import com.iflysse.viewmodel.CategoryViewModel.ParentCategory;
-import com.iflysse.viewmodel.EvaluateViewModel.EvaluateList;
-import com.iflysse.viewmodel.GoodsCartModel.GoodsCartList;
-import com.iflysse.viewmodel.UserViewModel.UserList;
+import com.actstrady.wmall.po.Evaluate;
+import com.actstrady.wmall.service.CategoryService;
+import com.actstrady.wmall.service.EvaluateService;
+import com.actstrady.wmall.service.GoodsCartService;
+import com.actstrady.wmall.service.GoodsService;
+import com.actstrady.wmall.vo.EvaluateList;
+import com.actstrady.wmall.vo.GoodsCartList;
+import com.actstrady.wmall.vo.ParentCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("order")
 public class OrderController {
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private GoodsCartService goodsCartService;
+    private final CategoryService categoryService;
+    private final GoodsCartService goodsCartService;
+    private final EvaluateService evaluateService;
+    private final GoodsService goodsService;
 
-    @Autowired
-    private EvaluateService evaluateService;
-    @Autowired
-    private GoodsService goodsService;
+    public OrderController(CategoryService categoryService, GoodsCartService goodsCartService, EvaluateService evaluateService, GoodsService goodsService) {
+        this.categoryService = categoryService;
+        this.goodsCartService = goodsCartService;
+        this.evaluateService = evaluateService;
+        this.goodsService = goodsService;
+    }
 
     /**
      * 购物车列表页
@@ -40,7 +39,7 @@ public class OrderController {
      * @return
      */
 
-    @RequestMapping("/order/orderView/{pageSize}/{pageIndex}")
+    @RequestMapping("orderView/{pageSize}/{pageIndex}")
     public String OrderView(Model model, @PathVariable("pageSize") int pageSize, @PathVariable("pageIndex") int pageIndex, HttpSession httpSession){
         UserList user=(UserList)httpSession.getAttribute("userList");
         int userId=user.getUserId();

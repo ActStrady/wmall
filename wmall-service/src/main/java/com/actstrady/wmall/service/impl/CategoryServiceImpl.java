@@ -1,5 +1,6 @@
 package com.actstrady.wmall.service.impl;
 
+import com.actstrady.wmall.dao.CategoryDao;
 import com.actstrady.wmall.po.Category;
 import com.actstrady.wmall.service.CategoryService;
 import com.actstrady.wmall.vo.CategoryGroup;
@@ -13,33 +14,37 @@ import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
+    private final CategoryDao categoryDao;
+
     @Autowired
-    private CategoryMapper categoryMapper;
+    public CategoryServiceImpl(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
 
     @Override
     public List<ParentCategory> getCategories() {
-        List<Category> categories = categoryMapper.getParents();
-        if(categories==null || categories.size()==0){
-            return new ArrayList<ParentCategory>(0);
+        List<Category> categories = categoryDao.getByParentIdNull();
+        if (categories == null || categories.size() == 0) {
+            return new ArrayList<>(0);
         }
         List<ParentCategory> result = new ArrayList<>();
-        // 遍历父类
-        for(Category category:categories){
+        // 一级菜单
+        for (Category category : categories) {
             ParentCategory item = new ParentCategory();
             item.setId(category.getId());
             item.setTitle(category.getTitle());
             item.setGroups(new ArrayList<>());
             result.add(item);
-            List<Category> groups = categoryMapper.getGroups(item.getId());
-            // 构建group
-            for(Category groupItem:groups){
+            List<Category> groups = categoryDao.getGroupByParentId(item.getId());
+            // 二级菜单
+            for (Category groupItem : groups) {
                 CategoryGroup group = new CategoryGroup();
                 group.setGroupName(groupItem.getGroup());
                 group.setCategories(new ArrayList<>());
                 item.getGroups().add(group);
-                // 构建item
-                List<Category> children = categoryMapper.getChildren(item.getId(), group.getGroupName());
-                for(Category childItem:children){
+                // 三级菜单
+                List<Category> children = categoryDao.getByParentIdAndGroup(item.getId(), group.getGroupName());
+                for (Category childItem : children) {
                     ChildCategory child = new ChildCategory();
                     child.setId(childItem.getId());
                     child.setTitle(childItem.getTitle());

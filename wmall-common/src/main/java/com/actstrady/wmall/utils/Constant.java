@@ -7,6 +7,7 @@ package com.actstrady.wmall.utils;
  * @gitHub : https://github.com/ActStrady/wmall
  */
 public class Constant {
+    public static final String USER = "user";
     // 状态 0成功 1失败
     public static final Short ZERO_SHORT = 0;
     public static final Short ONE_SHORT = 1;
@@ -20,4 +21,5 @@ public class Constant {
     // 错误码
     // 登录错误
     public static final String LOGIN_ERR = "login_error";
+    public static final String NOT_USER = "not_user";
 }

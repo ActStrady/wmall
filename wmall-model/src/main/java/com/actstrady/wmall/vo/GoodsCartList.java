@@ -1,6 +1,6 @@
 package com.actstrady.wmall.vo;
 
-import com.iflysse.pojo.Goods;
+import com.actstrady.wmall.po.Goods;
 
 import java.util.Date;
 

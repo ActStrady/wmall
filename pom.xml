@@ -38,6 +38,7 @@
         <!--定义所有用到的依赖的版本-->
         <java.version>11</java.version>
         <druid.version>1.1.20</druid.version>
+        <fastjson.version>1.2.62</fastjson.version>
     </properties>
     <!--使用主pom管理全部模块依赖的方式进行管理，
     父模块只提供版本定义，所以子模块需要用的时候自己引用，只是不需要写版本号-->
@@ -75,7 +76,12 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
-
+            <!--阿里处理json fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
             <!--其余这些统统交给子模块，用那个引用那个-->
             <!--jpa-->
             <!--<dependency>-->

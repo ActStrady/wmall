@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.iflysse.viewmodel.GoodsCartModel.GoodsCartList;
+import com.actstrady.wmall.vo.GoodsCartList;
 
 import java.util.List;
 

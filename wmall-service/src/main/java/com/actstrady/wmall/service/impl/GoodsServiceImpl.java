@@ -1,9 +1,14 @@
 package com.actstrady.wmall.service.impl;
 
+import com.actstrady.wmall.dao.CategoryDao;
+import com.actstrady.wmall.dao.GoodsDao;
 import com.actstrady.wmall.po.Goods;
 import com.actstrady.wmall.service.GoodsService;
 import com.actstrady.wmall.vo.Goods4List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,11 +16,16 @@ import java.util.List;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
-    @Autowired
-    private GoodsMapper goodsMapper;
-    @Autowired
-    private CategoryMapper categoryMapper;
+    private final GoodsDao goodsDao;
+    private final CategoryDao categoryDao;
 
+    @Autowired
+    public GoodsServiceImpl(GoodsDao goodsDao, CategoryDao categoryDao) {
+        this.goodsDao = goodsDao;
+        this.categoryDao = categoryDao;
+    }
+
+    // 封装成页面展示的list
     private List<Goods4List> buildGoodsList(List<Goods> goods){
         if(goods==null || goods.size()==0){
             return new ArrayList<>(0);
@@ -37,7 +47,7 @@ public class GoodsServiceImpl implements GoodsService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryMapper.getCategoryById(item.getCategoryId()));
+        result.setCategory(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
         String slide=item.getSlidePicture();
 
@@ -67,34 +77,38 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods4List> getAll(int pageSize, int pageIndex) {
-        return buildGoodsList(goodsMapper.getAll(pageSize, pageIndex));
+        Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(pageIndex, pageSize));
+        return buildGoodsList(goodsPage.getContent());
     }
 
     @Override
     public List<Goods4List> getByCategory(int categoryId, int pageSize, int pageIndex) {
-        return buildGoodsList(goodsMapper.getByCategory(categoryId,pageSize, pageIndex));
+        Page<Goods> goodsPage = goodsDao.getByCategoryId(categoryId, PageRequest.of(pageIndex, pageSize));
+        return buildGoodsList(goodsPage.getContent());
     }
 
     @Override
     public Goods4List getById(int goodsId) {
-        return buildGoods(goodsMapper.getById(goodsId));
+        return buildGoods(goodsDao.getOne(goodsId));
     }
 
     @Override
-    public List<Goods4List> getByName(String goodName, int pageSize, int pageIndex) {
-        return buildGoodsList(goodsMapper.getByName(goodName,pageSize,pageIndex));
+    public List<Goods4List> getByName(String goodsName, int pageSize, int pageIndex) {
+        Page<Goods> goodsPage = goodsDao.getByGoodsName(goodsName, PageRequest.of(pageIndex, pageSize));
+        return buildGoodsList(goodsPage.getContent());
     }
 
     @Override
     public void updateGradeById(int goodId, double addGrade) {
-        Goods good=goodsMapper.getById(goodId);
+        Goods good=goodsDao.getOne(goodId);
         int newRankNum=good.getRankNum()+1;
         double newGrade= Double.parseDouble(String.format("%.3f", ((good.getRankNum()*good.getGrade()+addGrade)/newRankNum)));
-        goodsMapper.updateGradeById(goodId,newRankNum,newGrade);
+        goodsDao.updateGradeById(goodId,newRankNum,newGrade);
     }
 
     @Override
     public List<Goods4List> getNewsByTime() {
-        return buildGoodsList(goodsMapper.getNewsByTime());
+        Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createtime").descending()));
+        return buildGoodsList(goodsPage.getContent());
     }
 }

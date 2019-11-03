@@ -13,6 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @gitHub : https://github.com/ActStrady/wmall
  */
 public interface UserDao extends JpaRepository<User, Integer> {
-    User getUserByUsernameAndPassword(String username, String password);
-    User getUserByUsername(String username);
+    User getByUsernameAndPassword(String username, String password);
+    User getByUsername(String username);
 }

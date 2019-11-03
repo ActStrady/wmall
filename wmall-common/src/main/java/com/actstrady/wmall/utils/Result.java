@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-public class Result<T> {
+public class Result {
     // 是否成功 0 成功 1 失败
     private Short status;
     // 内容 全部封装为字符串

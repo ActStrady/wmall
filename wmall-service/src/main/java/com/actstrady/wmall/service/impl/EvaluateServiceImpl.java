@@ -1,9 +1,13 @@
 package com.actstrady.wmall.service.impl;
 
+import com.actstrady.wmall.dao.EvaluateDao;
 import com.actstrady.wmall.po.Evaluate;
 import com.actstrady.wmall.service.EvaluateService;
 import com.actstrady.wmall.vo.EvaluateList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,8 +15,12 @@ import java.util.List;
 
 @Service
 public class EvaluateServiceImpl implements EvaluateService {
+    private final EvaluateDao evaluateDao;
+
     @Autowired
-    private EvaluateMapper evaluateMapper;
+    public EvaluateServiceImpl(EvaluateDao evaluateDao) {
+        this.evaluateDao = evaluateDao;
+    }
 
     private List<EvaluateList> buildEvaluateList(List<Evaluate> evaluates){
         if(evaluates==null || evaluates.size()==0){
@@ -39,7 +47,8 @@ public class EvaluateServiceImpl implements EvaluateService {
 
     @Override
     public List<EvaluateList> getByGood(int goodsId, int pageSize, int pageIndex) {
-        return buildEvaluateList(evaluateMapper.getByGood(goodsId,pageSize, pageIndex));
+        Page<Evaluate> goodsPage = evaluateDao.getByGoodsId(goodsId, PageRequest.of(pageIndex, pageSize));
+        return buildEvaluateList(goodsPage.getContent());
     }
     @Override
     public EvaluateList  getByCartId(int cartId) {

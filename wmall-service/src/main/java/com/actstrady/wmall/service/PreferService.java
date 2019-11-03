@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.iflysse.viewmodel.PreferViewModel.PreferList;
+import com.actstrady.wmall.vo.PreferList;
 
 import java.util.List;
 

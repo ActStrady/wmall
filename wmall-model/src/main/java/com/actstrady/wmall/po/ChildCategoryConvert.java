@@ -1,11 +1,11 @@
 package com.actstrady.wmall.po;
 
-import com.iflysse.util.Converter;
-import com.iflysse.viewmodel.CategoryViewModel.ChildCategory;
+import com.actstrady.wmall.utils.Converter;
+import com.actstrady.wmall.vo.ChildCategory;
 
 public class ChildCategoryConvert implements Converter<Category, ChildCategory> {
     @Override
-    public ChildCategory Convert(Category input) {
+    public ChildCategory convert(Category input) {
         ChildCategory child = new ChildCategory();
         child.setId(input.getId());
         child.setTitle(input.getTitle());

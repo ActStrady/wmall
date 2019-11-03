@@ -1,6 +1,6 @@
 package com.actstrady.wmall.vo;
 
-import com.iflysse.pojo.Category;
+import com.actstrady.wmall.po.Category;
 
 import java.util.List;
 

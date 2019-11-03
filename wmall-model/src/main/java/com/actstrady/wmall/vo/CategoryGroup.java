@@ -12,6 +12,7 @@ public class CategoryGroup {
      * @param other
      * @return
      */
+    @Override
     public boolean equals(Object other) {
         if (this == other) {
             return true;
@@ -26,6 +27,7 @@ public class CategoryGroup {
         return otherGroup.getGroupName() == this.getGroupName();
     }
 
+    @Override
     public int hashCode() {
         int result = 17;
         result += 31 * groupName.hashCode();

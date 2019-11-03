@@ -1,11 +1,11 @@
 package com.actstrady.wmall.po;
 
-import com.iflysse.util.Converter;
-import com.iflysse.viewmodel.CategoryViewModel.CategoryGroup;
+import com.actstrady.wmall.utils.Converter;
+import com.actstrady.wmall.vo.CategoryGroup;
 
 public class CategoryGroupConvert implements Converter<Category, CategoryGroup> {
     @Override
-    public CategoryGroup Convert(Category input) {
+    public CategoryGroup convert(Category input) {
         CategoryGroup group = new CategoryGroup();
         group.setGroupName(input.getGroup());
         return group;
