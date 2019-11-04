@@ -22,7 +22,7 @@ public interface CategoryDao extends JpaRepository<Category, Integer> {
      * @return
      */
     @Query(value = "select distinct `group` from category where parentId = ?1", nativeQuery = true)
-    List<Category> getGroupByParentId(Integer parentId);
+    List<String> getGroupByParentId(Integer parentId);
 
     List<Category> getByParentIdAndGroup(Integer parentId, String group);
 }

@@ -111,7 +111,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods4List> getNewsByTime() {
-        Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createtime").descending()));
+        Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createTime").descending()));
         return buildGoodsList(goodsPage.getContent());
     }
 }

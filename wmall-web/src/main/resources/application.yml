@@ -12,5 +12,5 @@ spring:
     # hibernate.hbm2ddl.auto”属性的快捷方式
     hibernate:
       ddl-auto: update
-    # 禁用OSIV
-    open-in-view: false
+    # 禁用OSIV 会出现懒加载LazyInitializationException错误
+#    open-in-view: false

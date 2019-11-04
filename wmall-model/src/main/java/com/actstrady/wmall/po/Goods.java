@@ -3,6 +3,7 @@ package com.actstrady.wmall.po;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 数据表Goods映射类
@@ -29,4 +30,6 @@ public class Goods {
     private Integer rankNum;
     @Column(name = "detailpicture")
     private String detailPicture;
+    @Column(name = "createtime")
+    private Date createTime;
 }

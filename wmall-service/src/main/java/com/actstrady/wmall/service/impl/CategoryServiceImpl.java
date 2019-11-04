@@ -35,11 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
             item.setTitle(category.getTitle());
             item.setGroups(new ArrayList<>());
             result.add(item);
-            List<Category> groups = categoryDao.getGroupByParentId(item.getId());
+            List<String> groups = categoryDao.getGroupByParentId(item.getId());
             // 二级菜单
-            for (Category groupItem : groups) {
+            for (String groupName : groups) {
                 CategoryGroup group = new CategoryGroup();
-                group.setGroupName(groupItem.getGroup());
+                group.setGroupName(groupName);
                 group.setCategories(new ArrayList<>());
                 item.getGroups().add(group);
                 // 三级菜单

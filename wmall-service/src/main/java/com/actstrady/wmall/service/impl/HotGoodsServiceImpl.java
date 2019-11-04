@@ -59,7 +59,7 @@ public class HotGoodsServiceImpl implements HotGoodsService {
 
     @Override
     public List<Goods4List> getTop() {
-        Page<HotGoods> hotGoodsPage = hotGoodsDao.findAll(PageRequest.of(0, 9, Sort.by("createtime").descending()));
+        Page<HotGoods> hotGoodsPage = hotGoodsDao.findAll(PageRequest.of(0, 9, Sort.by("createTime").descending()));
         return buildHotGoodsList(hotGoodsPage.getContent());
     }
 }
