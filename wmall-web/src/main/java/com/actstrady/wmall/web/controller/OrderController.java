@@ -1,16 +1,16 @@
 package com.actstrady.wmall.web.controller;
 
 import com.actstrady.wmall.po.Evaluate;
+import com.actstrady.wmall.po.User;
 import com.actstrady.wmall.service.CategoryService;
 import com.actstrady.wmall.service.EvaluateService;
 import com.actstrady.wmall.service.GoodsCartService;
 import com.actstrady.wmall.service.GoodsService;
+import com.actstrady.wmall.utils.Constant;
+import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.EvaluateList;
 import com.actstrady.wmall.vo.GoodsCartList;
-import com.actstrady.wmall.vo.ParentCategory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import com.alibaba.fastjson.JSON;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -23,57 +23,66 @@ public class OrderController {
     private final GoodsCartService goodsCartService;
     private final EvaluateService evaluateService;
     private final GoodsService goodsService;
+    private final Result result;
 
-    public OrderController(CategoryService categoryService, GoodsCartService goodsCartService, EvaluateService evaluateService, GoodsService goodsService) {
+    public OrderController(CategoryService categoryService, GoodsCartService goodsCartService,
+                           EvaluateService evaluateService, GoodsService goodsService, Result result) {
         this.categoryService = categoryService;
         this.goodsCartService = goodsCartService;
         this.evaluateService = evaluateService;
         this.goodsService = goodsService;
+        this.result = result;
     }
 
     /**
-     * 购物车列表页
-     * @param model
+     * 订单列表页
+     *
      * @param pageSize
      * @param pageIndex
      * @return
      */
-
-    @RequestMapping("orderView/{pageSize}/{pageIndex}")
-    public String OrderView(Model model, @PathVariable("pageSize") int pageSize, @PathVariable("pageIndex") int pageIndex, HttpSession httpSession){
-        UserList user=(UserList)httpSession.getAttribute("userList");
-        int userId=user.getUserId();
-        List<GoodsCartList> carts = goodsCartService.getPurchasedGoodByUserId(userId,pageSize,pageIndex);
-        model.addAttribute("carts", carts);
-        List<ParentCategory> categories = categoryService.getCategories();
-        model.addAttribute("categories", categories);
-        model.addAttribute("userList",user);
-        return "order";
-    }
-
-    @RequestMapping("/order/addEvaluation")
-    @ResponseBody
-    public boolean  AddEvaluation(@RequestBody Evaluate data, HttpSession httpSession) {
-        if (httpSession.getAttribute("userList")!=null) {
-            int userId=((UserList)httpSession.getAttribute("userList")).getUserId();
-            data.setUserId(userId);
-            evaluateService.insertEvaluateInfo(data);
-            goodsService.updateGradeById(data.getGoodsId(),data.getGrade());
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    @RequestMapping("/order/getByCartId")
-    @ResponseBody
-    public EvaluateList GetByCartId(@RequestBody Evaluate data) {
-        EvaluateList result=evaluateService.getByCartId (data.getCartId());
-        String i=result.getGrade()+result.getComment();
+    @GetMapping("orderView/{pageSize}/{pageIndex}")
+    public Result orderView(HttpSession httpSession,
+                            @PathVariable("pageSize") int pageSize,
+                            @PathVariable("pageIndex") int pageIndex) {
+        User user = (User) httpSession.getAttribute("user");
+        int userId = user.getId();
+        // 已购列表
+        List<GoodsCartList> carts = goodsCartService.getPurchasedGoodByUserId(userId, pageSize, pageIndex);
+        result.setCode(Constant.ZERO);
+        result.setStatus(Constant.ZERO_SHORT);
+        result.setData(JSON.toJSONString(carts));
         return result;
     }
 
+    /**
+     * 添加评价
+     *
+     * @param data
+     * @param httpSession
+     * @return
+     */
+    @GetMapping("addEvaluation")
+    public boolean addEvaluation(@RequestBody Evaluate data, HttpSession httpSession) {
+        if (httpSession.getAttribute("user") != null) {
+            int userId = ((User) httpSession.getAttribute("user")).getId();
+            data.setUserId(userId);
+            Evaluate evaluate = evaluateService.insertEvaluateInfo(data);
+            if (evaluate == null) {
+                return false;
+            } else {
+                // 更新评价
+                goodsService.updateGradeById(data.getGoodsId(), data.getGrade());
+                return true;
+            }
+        }
+        return false;
+    }
 
+    @GetMapping("getByCartId")
+    public EvaluateList getByCartId(@RequestBody Evaluate data) {
+        EvaluateList result = evaluateService.getByCartId(data.getCartId());
+        String i = result.getGrade() + result.getComment();
+        return result;
+    }
 }

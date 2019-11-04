@@ -30,6 +30,6 @@ public interface EvaluateService {
      * @param data 评价信息
      * @return 评价列表
      */
-    public void insertEvaluateInfo(Evaluate data);
+    public Evaluate insertEvaluateInfo(Evaluate data);
 
 }

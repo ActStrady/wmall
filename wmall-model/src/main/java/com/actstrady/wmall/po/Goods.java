@@ -16,9 +16,6 @@ public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    /**
-     * 商品
-     */
     private String goodsName;
     private String goodsIntroduce;
     private Double goodsPrice;

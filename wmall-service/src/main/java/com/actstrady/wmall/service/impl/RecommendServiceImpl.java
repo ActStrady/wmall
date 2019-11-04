@@ -33,7 +33,7 @@ public class RecommendServiceImpl implements RecommendService {
 
         List<Goods4List> result = new ArrayList<>();
         for (Recommend good : recomendGoods) {
-            Goods item = goodsDao.getById(good.getGoodsId());
+            Goods item = goodsDao.getOne(good.getGoodsId());
             Goods4List g4list = buildGoods(item);
             result.add(g4list);
         }
@@ -48,14 +48,13 @@ public class RecommendServiceImpl implements RecommendService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryMapper.getCategoryById(item.getCategoryId()));
+        result.setCategory(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
-
         return result;
     }
 
     @Override
     public List<Goods4List> getByUserId(int userId) {
-        return buildRecommendGoodsList(RecommendDao(userId));
+        return buildRecommendGoodsList(recommendDao.getByUserId(userId));
     }
 }

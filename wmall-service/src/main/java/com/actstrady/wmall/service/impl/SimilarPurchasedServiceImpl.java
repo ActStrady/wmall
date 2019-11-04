@@ -1,6 +1,8 @@
 package com.actstrady.wmall.service.impl;
 
+import com.actstrady.wmall.dao.CategoryDao;
 import com.actstrady.wmall.dao.GoodsDao;
+import com.actstrady.wmall.dao.SimilarPurchasedDao;
 import com.actstrady.wmall.po.Goods;
 import com.actstrady.wmall.po.SimilarPurchased;
 import com.actstrady.wmall.service.SimilarPurchasedService;
@@ -16,27 +18,26 @@ public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
     @Autowired
     private GoodsDao goodsDao;
     @Autowired
-    private SimilarPurchasedMapper similarPurchasedMapper;
+    private SimilarPurchasedDao similarPurchasedDao;
     @Autowired
-    private CategoryMapper categoryMapper;
+    private CategoryDao categoryDao;
 
 
-
-    private List<Goods4List> buildSimilarPurchasedList(List<SimilarPurchased> goods){
-        if(goods==null || goods.size()==0){
+    private List<Goods4List> buildSimilarPurchasedList(List<SimilarPurchased> goods) {
+        if (goods == null || goods.size() == 0) {
             return new ArrayList<>(0);
         }
 
         List<Goods4List> result = new ArrayList<>();
-        for(SimilarPurchased good:goods){
-            Goods item=goodsMapper.getById(good.getSimilarGoodsId());
+        for (SimilarPurchased good : goods) {
+            Goods item = goodsDao.getOne(good.getSimilarGoodsId());
             Goods4List g4list = buildGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private Goods4List buildGoods(Goods item){
+    private Goods4List buildGoods(Goods item) {
         Goods4List result = new Goods4List();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
@@ -44,7 +45,7 @@ public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryMapper.getCategoryById(item.getCategoryId()));
+        result.setCategory(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
 
         return result;
@@ -52,6 +53,6 @@ public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
 
     @Override
     public List<Goods4List> getByGoodsId(int goodsId) {
-        return buildSimilarPurchasedList(similarPurchasedMapper.getByGoodsId(goodsId));
+        return buildSimilarPurchasedList(similarPurchasedDao.getByGoodsId(goodsId));
     }
 }

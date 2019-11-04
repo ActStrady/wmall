@@ -23,12 +23,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(User user) {
-        return userDao.getUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+        return userDao.getByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 
     @Override
     public Boolean checkUsername(String username) {
-        return userDao.getUserByUsername(username) == null;
+        return userDao.getByUsername(username) == null;
     }
 
     @Override
