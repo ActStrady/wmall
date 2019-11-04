@@ -24,7 +24,7 @@ public class CategoryGroup {
             return false;
         }
         CategoryGroup otherGroup = (CategoryGroup) other;
-        return otherGroup.getGroupName() == this.getGroupName();
+        return otherGroup.getGroupName().equals(this.getGroupName());
     }
 
     @Override

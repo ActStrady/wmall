@@ -2,10 +2,7 @@ package com.actstrady.wmall.po;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 对应菜单分类
@@ -18,5 +15,6 @@ public class Category {
     private Integer id;
     private String title;
     private String group;
+    @Column(name = "parentid")
     private Integer parentId;
 }

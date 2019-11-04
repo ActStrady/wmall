@@ -2,21 +2,21 @@ package com.actstrady.wmall.po;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Entity
+@Entity(name = "goodscart")
 public class GoodsCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int userId;
-    private int number;
-    private int goodsId;
+    private Integer id;
+    @Column(name="userid")
+    private Integer userId;
+    private Integer number;
+    @Column(name="goodsid")
+    private Integer goodsId;
+    @Column(name="createtime")
     private Date createTime;
-    private int status;
+    private Integer status;
 }

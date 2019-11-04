@@ -2,10 +2,7 @@ package com.actstrady.wmall.po;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -16,8 +13,11 @@ import java.util.Date;
 public class Prefer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int userId;
-    private int categoryId;
+    private Integer id;
+    @Column(name = "userid")
+    private Integer userId;
+    @Column(name = "categoryid")
+    private Integer categoryId;
+    @Column(name = "createtime")
     private Date createTime;
 }

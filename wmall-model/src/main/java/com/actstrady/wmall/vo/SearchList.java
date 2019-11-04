@@ -1,5 +1,8 @@
 package com.actstrady.wmall.vo;
 
+import lombok.Data;
+
+@Data
 public class SearchList {
     /**
      * 返回消息
@@ -7,28 +10,4 @@ public class SearchList {
     private int pageIndex;
     private int pageSize;
     private String searchCondition;
-
-    public int getPageIndex() {
-        return pageIndex;
-    }
-
-    public void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public String getSearchCondition() {
-        return searchCondition;
-    }
-
-    public void setSearchCondition(String searchCondition) {
-        this.searchCondition = searchCondition;
-    }
 }
