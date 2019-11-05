@@ -4,15 +4,15 @@ import com.actstrady.wmall.dao.EvaluateDao;
 import com.actstrady.wmall.po.Evaluate;
 import com.actstrady.wmall.service.EvaluateService;
 import com.actstrady.wmall.vo.EvaluateList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class EvaluateServiceImpl implements EvaluateService {
     private final EvaluateDao evaluateDao;
 
@@ -36,6 +36,8 @@ public class EvaluateServiceImpl implements EvaluateService {
     private EvaluateList buildEvaluate(Evaluate item) {
         EvaluateList elst = new EvaluateList();
         elst.setId(item.getId());
+        elst.setUserId(item.getUserId());
+        elst.setGoodsId(item.getGoodsId());
         elst.setComment(item.getComment());
         elst.setGrade(item.getGrade());
         elst.setUserName(item.getUserName());
@@ -46,8 +48,10 @@ public class EvaluateServiceImpl implements EvaluateService {
 
     @Override
     public List<EvaluateList> getByGood(int goodsId, int pageSize, int pageIndex) {
-        Page<Evaluate> goodsPage = evaluateDao.getByGoodsId(goodsId, PageRequest.of(pageIndex * pageSize, pageSize));
-        return buildEvaluateList(goodsPage.getContent());
+        for (Evaluate evaluate : evaluateDao.getByGoodsId(goodsId, pageIndex * pageSize, pageSize)) {
+            log.info(evaluate.toString());
+        }
+        return buildEvaluateList(evaluateDao.getByGoodsId(goodsId, pageIndex * pageSize, pageSize));
     }
 
     @Override

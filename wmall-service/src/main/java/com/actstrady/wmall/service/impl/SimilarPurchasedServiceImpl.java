@@ -15,12 +15,16 @@ import java.util.List;
 
 @Service
 public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
+    private final GoodsDao goodsDao;
+    private final SimilarPurchasedDao similarPurchasedDao;
+    private final CategoryDao categoryDao;
+
     @Autowired
-    private GoodsDao goodsDao;
-    @Autowired
-    private SimilarPurchasedDao similarPurchasedDao;
-    @Autowired
-    private CategoryDao categoryDao;
+    public SimilarPurchasedServiceImpl(GoodsDao goodsDao, SimilarPurchasedDao similarPurchasedDao, CategoryDao categoryDao) {
+        this.goodsDao = goodsDao;
+        this.similarPurchasedDao = similarPurchasedDao;
+        this.categoryDao = categoryDao;
+    }
 
 
     private List<Goods4List> buildSimilarPurchasedList(List<SimilarPurchased> goods) {
@@ -46,8 +50,6 @@ public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
         result.setCategory(categoryDao.getOne(item.getCategoryId()));
-        result.setCategoryId(item.getCategoryId());
-
         return result;
     }
 

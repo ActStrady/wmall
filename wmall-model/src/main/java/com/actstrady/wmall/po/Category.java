@@ -8,7 +8,7 @@ import javax.persistence.*;
  * 对应菜单分类
  */
 @Data
-@Entity
+@Entity(name = "category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

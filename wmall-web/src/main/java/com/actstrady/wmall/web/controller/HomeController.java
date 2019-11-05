@@ -49,12 +49,10 @@ public class HomeController {
      * @param model ViewModel
      * @return
      */
-    @GetMapping
+    @GetMapping("data")
     public Result index(Model model, HttpSession httpSession) {
         // 给前端返回的数据
         Map<String, Object> homeMap = new HashMap<>(50);
-        // 菜单列表
-        List<ParentCategory> categories = categoryService.getCategories();
         // 分页查询商品
         List<Goods4List> goods = goodsService.getAll(9, 0);
         // 获取热门商品
@@ -63,7 +61,6 @@ public class HomeController {
         List<Goods4List> newsGoods = goodsService.getNewsByTime();
 
         // 添加结果
-        homeMap.put("categories", categories);
         homeMap.put("goods", goods);
         homeMap.put("hotGoods", hotGoods);
         homeMap.put("newsGoods", newsGoods);
@@ -84,6 +81,15 @@ public class HomeController {
         return result;
     }
 
+    @GetMapping("head")
+    public Result head() {
+        // 菜单列表
+        List<ParentCategory> categories = categoryService.getCategories();
+        result.setCode(Constant.ZERO);
+        result.setStatus(Constant.ZERO_SHORT);
+        result.setData(JSON.toJSONString(categories));
+        return result;
+    }
     /**
      * @param model
      * @param categoryId
@@ -114,7 +120,7 @@ public class HomeController {
      * @param httpSession
      * @return
      */
-    @RequestMapping("product/search/{content}/{pageSize}/{pageIndex}")
+    @GetMapping("product/search/{content}/{pageSize}/{pageIndex}")
     public Result productSearch(Model model, HttpSession httpSession,
                                 @PathVariable("content") String content,
                                 @PathVariable("pageSize") int pageSize,
@@ -129,12 +135,11 @@ public class HomeController {
     /**
      * 物品详情页
      *
-     * @param model
      * @param goodsId
      * @return
      */
-    @RequestMapping("productView/{gId}")
-    public Result productView(Model model, @PathVariable("gId") int goodsId, HttpSession httpSession) {
+    @GetMapping("productView/{gId}")
+    public Result productView(@PathVariable("gId") int goodsId) {
         Map<String, Object> productMap = new HashMap<>();
         Goods4List goods = goodsService.getById(goodsId);
         // 评价信息
@@ -146,7 +151,8 @@ public class HomeController {
         productMap.put("similarGoods", similarGoods);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
-        result.setData(JSON.toJSONString(productMap));
+        // JSON.toJSON解决嵌套问题
+        result.setData(JSON.toJSONString(JSON.toJSON(productMap)));
         return result;
     }
 }

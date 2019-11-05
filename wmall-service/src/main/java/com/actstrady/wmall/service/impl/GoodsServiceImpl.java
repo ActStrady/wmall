@@ -39,6 +39,31 @@ public class GoodsServiceImpl implements GoodsService {
         return result;
     }
 
+    private List<Goods4List> buildNewGoodsList(List<Goods> goods) {
+        if (goods == null || goods.size() == 0) {
+            return new ArrayList<>(0);
+        }
+
+        List<Goods4List> result = new ArrayList<>();
+        for (Goods item : goods) {
+            Goods4List g4list = buildNewGoods(item);
+            result.add(g4list);
+        }
+        return result;
+    }
+
+    private Goods4List buildNewGoods(Goods item){
+        Goods4List result = new Goods4List();
+        result.setId(item.getId());
+        result.setName(item.getGoodsName());
+        result.setPrice(item.getGoodsPrice());
+        result.setUrl(item.getUrl());
+        result.setDescription(item.getGoodsIntroduce());
+        result.setCategoryId(item.getCategoryId());
+        result.setCategory(categoryDao.getOne(item.getCategoryId()));
+        result.setCategoryId(item.getCategoryId());
+        return result;
+    }
     private Goods4List buildGoods(Goods item) {
         Goods4List result = new Goods4List();
         result.setId(item.getId());
@@ -51,7 +76,7 @@ public class GoodsServiceImpl implements GoodsService {
         result.setCategoryId(item.getCategoryId());
         String slide = item.getSlidePicture();
 
-        //处理华东图片
+        //处理滑动图片
         slide = slide.substring(1, slide.length() - 1);
         String[] sp = slide.split("\\|");
         result.setSlide_1(sp[0].substring(1, sp[0].length() - 1));
@@ -112,6 +137,6 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Goods4List> getNewsByTime() {
         Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createTime").descending()));
-        return buildGoodsList(goodsPage.getContent());
+        return buildNewGoodsList(goodsPage.getContent());
     }
 }

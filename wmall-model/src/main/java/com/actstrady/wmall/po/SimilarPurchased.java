@@ -9,7 +9,7 @@ import java.util.Date;
  * 数据表SimilarPurchased映射类
  */
 @Data
-@Entity(name = "Similarpurchased")
+@Entity(name = "similarpurchased")
 public class SimilarPurchased {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

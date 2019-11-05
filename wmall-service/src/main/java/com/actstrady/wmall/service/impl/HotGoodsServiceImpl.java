@@ -29,12 +29,10 @@ public class HotGoodsServiceImpl implements HotGoodsService {
         this.categoryDao = categoryDao;
     }
 
-
     private List<Goods4List> buildHotGoodsList(List<HotGoods> hotGoods){
         if(hotGoods==null || hotGoods.size()==0){
             return new ArrayList<>(0);
         }
-
         List<Goods4List> result = new ArrayList<>();
         for(HotGoods hotGood:hotGoods){
             Goods item = goodsDao.getOne(hotGood.getGoodsId());

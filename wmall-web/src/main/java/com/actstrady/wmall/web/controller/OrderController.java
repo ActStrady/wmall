@@ -25,7 +25,7 @@ public class OrderController {
     private final GoodsService goodsService;
     private final Result result;
 
-    public OrderController(CategoryService categoryService, GoodsCartService goodsCartService,
+    public OrderController(CategoryService categoryService,GoodsCartService goodsCartService,
                            EvaluateService evaluateService, GoodsService goodsService, Result result) {
         this.categoryService = categoryService;
         this.goodsCartService = goodsCartService;
