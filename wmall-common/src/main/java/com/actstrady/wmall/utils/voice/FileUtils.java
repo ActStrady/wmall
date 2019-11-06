@@ -7,7 +7,7 @@ public class FileUtils {
         for (File file : files) {  
             if (file.exists()) {  
                 file.delete();  
-            }  
+            }
         }  
     }
 }
