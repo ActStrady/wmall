@@ -93,6 +93,7 @@ public class GoodsCartServiceImpl implements GoodsCartService {
         goodsCart.setGoodsId(goodsId);
         goodsCart.setNumber(number);
         goodsCart.setStatus(status);
+        goodsCart.setCreateTime(new Date());
         goodsCartDao.save(goodsCart);
     }
 

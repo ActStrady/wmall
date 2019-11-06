@@ -4,16 +4,17 @@ import com.actstrady.wmall.po.Goods;
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
 public class GoodsCartList {
-    private int id;
-    private int userId;
-    private int number;
-    private int goodsId;
+    private Integer id;
+    private Integer userId;
+    private Integer number;
+    private Integer goodsId;
     private Date createTime;
-    private int status;
+    private Integer status;
     private String statusDesc;
     private Goods goods;
-    private int parentCategoryId;
-    private int evaluateId;
+    private Integer parentCategoryId;
+    private Integer evaluateId;
 }

@@ -2,7 +2,6 @@ package com.actstrady.wmall.web.controller;
 
 import com.actstrady.wmall.po.Evaluate;
 import com.actstrady.wmall.po.User;
-import com.actstrady.wmall.service.CategoryService;
 import com.actstrady.wmall.service.EvaluateService;
 import com.actstrady.wmall.service.GoodsCartService;
 import com.actstrady.wmall.service.GoodsService;
@@ -11,6 +10,7 @@ import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.EvaluateList;
 import com.actstrady.wmall.vo.GoodsCartList;
 import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -19,15 +19,14 @@ import java.util.List;
 @RestController
 @RequestMapping("order")
 public class OrderController {
-    private final CategoryService categoryService;
     private final GoodsCartService goodsCartService;
     private final EvaluateService evaluateService;
     private final GoodsService goodsService;
     private final Result result;
 
-    public OrderController(CategoryService categoryService,GoodsCartService goodsCartService,
-                           EvaluateService evaluateService, GoodsService goodsService, Result result) {
-        this.categoryService = categoryService;
+    @Autowired
+    public OrderController(GoodsCartService goodsCartService, EvaluateService evaluateService,
+                           GoodsService goodsService, Result result) {
         this.goodsCartService = goodsCartService;
         this.evaluateService = evaluateService;
         this.goodsService = goodsService;
@@ -51,7 +50,7 @@ public class OrderController {
         List<GoodsCartList> carts = goodsCartService.getPurchasedGoodByUserId(userId, pageSize, pageIndex);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
-        result.setData(JSON.toJSONString(carts));
+        result.setData(JSON.toJSONString(JSON.toJSON(carts)));
         return result;
     }
 
@@ -82,7 +81,6 @@ public class OrderController {
     @GetMapping("getByCartId")
     public EvaluateList getByCartId(@RequestBody Evaluate data) {
         EvaluateList result = evaluateService.getByCartId(data.getCartId());
-        String i = result.getGrade() + result.getComment();
         return result;
     }
 }

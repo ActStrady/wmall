@@ -18,10 +18,10 @@ public interface CategoryDao extends JpaRepository<Category, Integer> {
     /**
      * nativeQuery = true 表示使用原生sql
      *
-     * @param parentId
+     * @param parentId 父id
      * @return
      */
-    @Query(value = "select distinct `group` from category where parentId = ?1", nativeQuery = true)
+    @Query(value = "select distinct `group` from category where parentid = ?1", nativeQuery = true)
     List<String> getGroupByParentId(Integer parentId);
 
     List<Category> getByParentIdAndGroup(Integer parentId, String group);

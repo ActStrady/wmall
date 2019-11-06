@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * 对应菜单分类
+ * 菜单分类
  */
 @Data
 @Entity(name = "category")

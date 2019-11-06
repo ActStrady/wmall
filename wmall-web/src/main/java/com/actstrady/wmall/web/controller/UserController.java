@@ -3,12 +3,10 @@ package com.actstrady.wmall.web.controller;
 import com.actstrady.wmall.po.User;
 import com.actstrady.wmall.service.PreferService;
 import com.actstrady.wmall.service.UserService;
-import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.PreferList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -24,13 +22,11 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final PreferService preferService;
-    private final Result result;
 
     @Autowired
-    public UserController(UserService userService, Result result, PreferService preferService) {
+    public UserController(UserService userService, PreferService preferService) {
         this.userService = userService;
         this.preferService = preferService;
-        this.result = result;
     }
 
     /**
@@ -41,13 +37,16 @@ public class UserController {
      * @return 成功就是用户的id，0表示失败
      */
     @PostMapping("login")
-    public int login(@RequestBody User userMod, HttpSession httpSession) {
+    public int login(@RequestBody User userMod, HttpSession httpSession, Model model) {
         User user = userService.login(userMod);
         if (user == null) {
             return 0;
         } else {
             // 保存到session
             httpSession.setAttribute("user", user);
+            // 设置session时间
+            httpSession.setMaxInactiveInterval(60 * 60);
+            model.addAttribute("user", user);
             return user.getId();
         }
     }
@@ -55,28 +54,28 @@ public class UserController {
     /**
      * 退出功能
      *
-     * @param sessionStatus session状态
      * @return 成功
      */
     @GetMapping("logout")
-    public Boolean execute(SessionStatus sessionStatus) {
+    public Boolean execute(HttpSession httpSession) {
         // 使session失效
-        sessionStatus.setComplete();
-        return sessionStatus.isComplete();
+        httpSession.invalidate();
+        return true;
     }
 
     /**
-     * 判断session里是否有user
+     * 判断是否登录
+     * session里是否有user
      *
-     * @param model 模型
      * @return 是否成功
      */
     @GetMapping("checkLogin")
-    public boolean isLogin(Model model) {
-        return model.getAttribute("user") != null;
+    public boolean isLogin(HttpSession httpSession) {
+        return httpSession.getAttribute("user") != null;
     }
 
     /**
+     * 注册前查询是否已经有了user
      * 查询是否已经有用户
      *
      * @param data 传来的用户名
@@ -99,9 +98,10 @@ public class UserController {
     }
 
     /**
-     * 查询喜好列表
-     * @param httpSession
-     * @return
+     * 查询喜好列表(暂时这样)
+     *
+     * @param httpSession session
+     * @return 成功否
      */
     @GetMapping("checkPrefer")
     public boolean checkPrefer(HttpSession httpSession) {
@@ -112,10 +112,11 @@ public class UserController {
 
     /**
      * 插入喜好列表
-     * @param arrList
-     * @param httpSession
+     *
+     * @param arrList 喜好数据
+     * @param httpSession session
      */
-    @GetMapping("addPrefer")
+    @PostMapping("addPrefer")
     public void addPrefer(@RequestBody List<PreferList> arrList, HttpSession httpSession) {
         int userId = ((User) httpSession.getAttribute("user")).getId();
         for (PreferList arr : arrList) {

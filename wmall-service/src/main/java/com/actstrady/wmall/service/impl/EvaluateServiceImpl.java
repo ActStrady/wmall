@@ -48,9 +48,6 @@ public class EvaluateServiceImpl implements EvaluateService {
 
     @Override
     public List<EvaluateList> getByGood(int goodsId, int pageSize, int pageIndex) {
-        for (Evaluate evaluate : evaluateDao.getByGoodsId(goodsId, pageIndex * pageSize, pageSize)) {
-            log.info(evaluate.toString());
-        }
         return buildEvaluateList(evaluateDao.getByGoodsId(goodsId, pageIndex * pageSize, pageSize));
     }
 

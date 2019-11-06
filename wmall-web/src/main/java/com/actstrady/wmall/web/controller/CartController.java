@@ -68,7 +68,7 @@ public class CartController {
      * @param httpSession
      * @return
      */
-    @GetMapping("addCart")
+    @PostMapping("addCart")
     public boolean addCart(@RequestBody GoodsCartList cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
             User user = (User) httpSession.getAttribute("user");
@@ -76,7 +76,6 @@ public class CartController {
             // 是否存在
             List<GoodsCartList> isExits = goodsCartService.getByInfo(userId, cart.getGoodsId(), 0);
             if (isExits == null || isExits.size() == 0) {
-
                 goodsCartService.insertCartInfo(userId, cart.getGoodsId(), cart.getNumber(), 0);
             } else {
                 goodsCartService.addCartCountById(isExits.get(0).getId());
@@ -88,8 +87,7 @@ public class CartController {
 
     }
 
-    @RequestMapping("buyGoodQuick")
-    @ResponseBody
+    @PostMapping("buyGoodQuick")
     public boolean buyGoodQuick(@RequestBody GoodsCartList cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
             User user = (User) httpSession.getAttribute("user");
