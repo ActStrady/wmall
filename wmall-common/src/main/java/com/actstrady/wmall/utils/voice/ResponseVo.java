@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ResponseVo {
     private String code;
-    private String message;
+    private String message = "";
 }

@@ -47,6 +47,7 @@ public class AutoVoiceController {
         multfile.transferTo(iatFile);
         String relativelyPath = System.getProperty("user.dir");
         String temp = relativelyPath + File.separator + "temp";
+        log.info(temp);
         File tempFile = new File(temp);
         if (!tempFile.exists()) {
             tempFile.mkdir();
@@ -62,7 +63,9 @@ public class AutoVoiceController {
             WebIATWS ws = new WebIATWS();
             try {
                 ResponseVo response = ws.getMessage(destTemp);
-                message = response.getMessage();
+                if (response.getMessage() != null) {
+                    message = response.getMessage();
+                }
                 mode.addAttribute("iat_message", response);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -76,7 +79,6 @@ public class AutoVoiceController {
 
         //程序结束时，删除临时文件
         FileUtils.deleteFile(iatFile);
-        System.out.println("message:" + message);
         log.info("message:{}", message);
         return message;
     }
