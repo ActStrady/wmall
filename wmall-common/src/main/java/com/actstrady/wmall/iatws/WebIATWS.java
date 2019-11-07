@@ -1,4 +1,4 @@
-package com.actstrady.wmall.utils.iatws;
+package com.actstrady.wmall.iatws;
 
 import com.actstrady.wmall.utils.voice.ResponseVo;
 import com.google.gson.Gson;

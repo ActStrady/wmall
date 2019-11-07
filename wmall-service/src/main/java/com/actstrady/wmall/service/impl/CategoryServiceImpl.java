@@ -6,7 +6,6 @@ import com.actstrady.wmall.service.CategoryService;
 import com.actstrady.wmall.vo.CategoryGroup;
 import com.actstrady.wmall.vo.ChildCategory;
 import com.actstrady.wmall.vo.ParentCategory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryDao categoryDao;
 
-    @Autowired
     public CategoryServiceImpl(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }

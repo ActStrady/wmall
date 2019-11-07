@@ -1,6 +1,6 @@
 package com.actstrady.wmall.web.controller;
 
-import com.actstrady.wmall.utils.iatws.WebIATWS;
+import com.actstrady.wmall.iatws.WebIATWS;
 import com.actstrady.wmall.utils.voice.FileUtils;
 import com.actstrady.wmall.utils.voice.ResponseVo;
 import com.actstrady.wmall.utils.voice.UuidUtils;

@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.actstrady.wmall.vo.Goods4List;
+import com.actstrady.wmall.vo.GoodsVO;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ public interface SimilarPurchasedService {
      * @param goodsId 商品编号
      * @return 商品列表
      */
-    public List<Goods4List> getByGoodsId(int goodsId);
+    public List<GoodsVO> getByGoodsId(int goodsId);
 
 }

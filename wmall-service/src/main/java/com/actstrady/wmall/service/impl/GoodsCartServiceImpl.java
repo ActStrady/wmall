@@ -8,7 +8,7 @@ import com.actstrady.wmall.po.Evaluate;
 import com.actstrady.wmall.po.Goods;
 import com.actstrady.wmall.po.GoodsCart;
 import com.actstrady.wmall.service.GoodsCartService;
-import com.actstrady.wmall.vo.GoodsCartList;
+import com.actstrady.wmall.vo.GoodsCartVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -31,21 +31,21 @@ public class GoodsCartServiceImpl implements GoodsCartService {
         this.evaluateDao = evaluateDao;
     }
 
-    private List<GoodsCartList> buildGoodsCartList(List<GoodsCart> goodsCarts) {
+    private List<GoodsCartVO> buildGoodsCartList(List<GoodsCart> goodsCarts) {
         if (goodsCarts == null || goodsCarts.size() == 0) {
             return new ArrayList<>(0);
         }
 
-        List<GoodsCartList> result = new ArrayList<>();
+        List<GoodsCartVO> result = new ArrayList<>();
         for (GoodsCart item : goodsCarts) {
-            GoodsCartList gList = buildGoodsCart(item);
+            GoodsCartVO gList = buildGoodsCart(item);
             result.add(gList);
         }
         return result;
     }
 
-    private GoodsCartList buildGoodsCart(GoodsCart goodsCart) {
-        GoodsCartList item = new GoodsCartList();
+    private GoodsCartVO buildGoodsCart(GoodsCart goodsCart) {
+        GoodsCartVO item = new GoodsCartVO();
         item.setId(goodsCart.getId());
         item.setUserId(goodsCart.getUserId());
         item.setGoodsId(goodsCart.getGoodsId());
@@ -63,7 +63,7 @@ public class GoodsCartServiceImpl implements GoodsCartService {
     }
 
     @Override
-    public List<GoodsCartList> getByUser(int userId, int status, int pageSize, int pageIndex) {
+    public List<GoodsCartVO> getByUser(int userId, int status, int pageSize, int pageIndex) {
         Page<GoodsCart> goodsPage = goodsCartDao.getByUserIdAndStatus(userId, status, PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsCartList(goodsPage.getContent());
     }
@@ -82,7 +82,7 @@ public class GoodsCartServiceImpl implements GoodsCartService {
     }
 
     @Override
-    public List<GoodsCartList> getByInfo(int userId, int goodsId, int status) {
+    public List<GoodsCartVO> getByInfo(int userId, int goodsId, int status) {
         return buildGoodsCartList(goodsCartDao.getByUserIdAndStatusAndGoodsId(userId, goodsId, status));
     }
 
@@ -114,7 +114,7 @@ public class GoodsCartServiceImpl implements GoodsCartService {
      * @return 用于展示的商品列表
      */
     @Override
-    public List<GoodsCartList> getPurchasedGoodByUserId(int userId, int pageSize, int pageIndex) {
+    public List<GoodsCartVO> getPurchasedGoodByUserId(int userId, int pageSize, int pageIndex) {
         Page<GoodsCart> goodsCartsPage = goodsCartDao.getByUserIdAndStatus(userId, 1, PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsCartList(goodsCartsPage.getContent());
     }

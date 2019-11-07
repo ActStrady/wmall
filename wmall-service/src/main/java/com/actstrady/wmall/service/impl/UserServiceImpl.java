@@ -3,7 +3,6 @@ package com.actstrady.wmall.service.impl;
 import com.actstrady.wmall.dao.UserDao;
 import com.actstrady.wmall.po.User;
 import com.actstrady.wmall.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
-    @Autowired
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }

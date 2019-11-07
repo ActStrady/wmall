@@ -12,7 +12,6 @@
     <artifactId>wmall-common</artifactId>
 
     <dependencies>
-        <!--需要注入暂时这样-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -63,6 +62,11 @@
             <groupId>com.squareup.okio</groupId>
             <artifactId>okio</artifactId>
             <version>1.15.0</version>
+        </dependency>
+        <!--bean映射，javaPO到VO-->
+        <dependency>
+            <groupId>com.github.dozermapper</groupId>
+            <artifactId>dozer-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 </project>

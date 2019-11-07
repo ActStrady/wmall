@@ -15,7 +15,6 @@ import java.util.List;
 public class PreferServiceImpl implements PreferService {
     private final PreferDao preferDao;
 
-    @Autowired
     public PreferServiceImpl(PreferDao preferDao) {
         this.preferDao = preferDao;
     }

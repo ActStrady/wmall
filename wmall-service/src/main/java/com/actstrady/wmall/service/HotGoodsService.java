@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.actstrady.wmall.vo.Goods4List;
+import com.actstrady.wmall.vo.GoodsVO;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ public interface HotGoodsService {
      * 获取前10所有的热门商品信息
      * @return 商品列表
      */
-    public List<Goods4List> getTop();
+    public List<GoodsVO> getTop();
 
 }

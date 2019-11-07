@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class GoodsCartList {
+public class GoodsCartVO {
     private Integer id;
     private Integer userId;
     private Integer number;

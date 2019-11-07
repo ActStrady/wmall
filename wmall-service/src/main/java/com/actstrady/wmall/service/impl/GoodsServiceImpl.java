@@ -4,7 +4,8 @@ import com.actstrady.wmall.dao.CategoryDao;
 import com.actstrady.wmall.dao.GoodsDao;
 import com.actstrady.wmall.po.Goods;
 import com.actstrady.wmall.service.GoodsService;
-import com.actstrady.wmall.vo.Goods4List;
+import com.actstrady.wmall.vo.GoodsVO;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,41 +20,40 @@ public class GoodsServiceImpl implements GoodsService {
     private final GoodsDao goodsDao;
     private final CategoryDao categoryDao;
 
-    @Autowired
-    public GoodsServiceImpl(GoodsDao goodsDao, CategoryDao categoryDao) {
+    public GoodsServiceImpl(GoodsDao goodsDao, CategoryDao categoryDao, Mapper mapper) {
         this.goodsDao = goodsDao;
         this.categoryDao = categoryDao;
     }
 
     // 封装成页面展示的list
-    private List<Goods4List> buildGoodsList(List<Goods> goods) {
+    private List<GoodsVO> buildGoodsList(List<Goods> goods) {
         if (goods == null || goods.size() == 0) {
             return new ArrayList<>(0);
         }
 
-        List<Goods4List> result = new ArrayList<>();
+        List<GoodsVO> result = new ArrayList<>();
         for (Goods item : goods) {
-            Goods4List g4list = buildGoods(item);
+            GoodsVO g4list = buildGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private List<Goods4List> buildNewGoodsList(List<Goods> goods) {
+    private List<GoodsVO> buildNewGoodsList(List<Goods> goods) {
         if (goods == null || goods.size() == 0) {
             return new ArrayList<>(0);
         }
 
-        List<Goods4List> result = new ArrayList<>();
+        List<GoodsVO> result = new ArrayList<>();
         for (Goods item : goods) {
-            Goods4List g4list = buildNewGoods(item);
+            GoodsVO g4list = buildNewGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private Goods4List buildNewGoods(Goods item){
-        Goods4List result = new Goods4List();
+    private GoodsVO buildNewGoods(Goods item){
+        GoodsVO result = new GoodsVO();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
         result.setPrice(item.getGoodsPrice());
@@ -64,8 +64,8 @@ public class GoodsServiceImpl implements GoodsService {
         result.setCategoryId(item.getCategoryId());
         return result;
     }
-    private Goods4List buildGoods(Goods item) {
-        Goods4List result = new Goods4List();
+    private GoodsVO buildGoods(Goods item) {
+        GoodsVO result = new GoodsVO();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
         result.setPrice(item.getGoodsPrice());
@@ -101,25 +101,27 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods4List> getAll(int pageSize, int pageIndex) {
+    public List<GoodsVO> getAll(int pageSize, int pageIndex) {
         Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsList(goodsPage.getContent());
     }
 
     @Override
-    public List<Goods4List> getByCategory(int categoryId, int pageSize, int pageIndex) {
+    public List<GoodsVO> getByCategory(int categoryId, int pageSize, int pageIndex) {
         Page<Goods> goodsPage = goodsDao.getByCategoryId(categoryId, PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsList(goodsPage.getContent());
     }
 
     @Override
-    public Goods4List getById(int goodsId) {
+    public GoodsVO getById(int goodsId) {
         return buildGoods(goodsDao.getOne(goodsId));
     }
 
     @Override
-    public List<Goods4List> getByName(String goodsName, int pageSize, int pageIndex) {
-        Page<Goods> goodsPage = goodsDao.getByGoodsName(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
+    public List<GoodsVO> getByName(String goodsName, int pageSize, int pageIndex) {
+        Page<Goods> goodsPage = goodsDao.getByGoodsNameLike(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
+        System.out.println(goodsPage.getTotalElements());
+        System.out.println(goodsPage.getTotalPages());
         return buildGoodsList(goodsPage.getContent());
     }
 
@@ -135,7 +137,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods4List> getNewsByTime() {
+    public List<GoodsVO> getNewsByTime() {
         Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createTime").descending()));
         return buildNewGoodsList(goodsPage.getContent());
     }

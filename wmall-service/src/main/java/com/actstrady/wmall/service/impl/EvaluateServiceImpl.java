@@ -16,7 +16,6 @@ import java.util.List;
 public class EvaluateServiceImpl implements EvaluateService {
     private final EvaluateDao evaluateDao;
 
-    @Autowired
     public EvaluateServiceImpl(EvaluateDao evaluateDao) {
         this.evaluateDao = evaluateDao;
     }

@@ -4,7 +4,7 @@ import com.actstrady.wmall.po.User;
 import com.actstrady.wmall.service.GoodsCartService;
 import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
-import com.actstrady.wmall.vo.GoodsCartList;
+import com.actstrady.wmall.vo.GoodsCartVO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +36,7 @@ public class CartController {
         User user = (User) httpSession.getAttribute("user");
         int userId = user.getId();
         // 获取购物车列表
-        List<GoodsCartList> carts = goodsCartService.getByUser(userId, 0, pageSize, pageIndex);
+        List<GoodsCartVO> carts = goodsCartService.getByUser(userId, 0, pageSize, pageIndex);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
         result.setData(JSON.toJSONString(carts));
@@ -56,8 +56,8 @@ public class CartController {
     }
 
     @GetMapping("buyGoods")
-    public void buyGoods(@RequestBody List<GoodsCartList> arr) {
-        for (GoodsCartList cart : arr) {
+    public void buyGoods(@RequestBody List<GoodsCartVO> arr) {
+        for (GoodsCartVO cart : arr) {
             goodsCartService.updateById(cart.getId(), cart.getNumber());
         }
     }
@@ -69,12 +69,12 @@ public class CartController {
      * @return
      */
     @PostMapping("addCart")
-    public boolean addCart(@RequestBody GoodsCartList cart, HttpSession httpSession) {
+    public boolean addCart(@RequestBody GoodsCartVO cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
             User user = (User) httpSession.getAttribute("user");
             int userId = user.getId();
             // 是否存在
-            List<GoodsCartList> isExits = goodsCartService.getByInfo(userId, cart.getGoodsId(), 0);
+            List<GoodsCartVO> isExits = goodsCartService.getByInfo(userId, cart.getGoodsId(), 0);
             if (isExits == null || isExits.size() == 0) {
                 goodsCartService.insertCartInfo(userId, cart.getGoodsId(), cart.getNumber(), 0);
             } else {
@@ -88,7 +88,7 @@ public class CartController {
     }
 
     @PostMapping("buyGoodQuick")
-    public boolean buyGoodQuick(@RequestBody GoodsCartList cart, HttpSession httpSession) {
+    public boolean buyGoodQuick(@RequestBody GoodsCartVO cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
             User user = (User) httpSession.getAttribute("user");
             int userId = user.getId();

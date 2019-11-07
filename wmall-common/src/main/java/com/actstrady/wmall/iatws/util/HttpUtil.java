@@ -1,4 +1,4 @@
-package com.actstrady.wmall.utils.iatws.util;
+package com.actstrady.wmall.iatws.util;
 
 import java.io.*;
 import java.net.HttpURLConnection;

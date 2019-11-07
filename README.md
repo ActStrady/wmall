@@ -4,6 +4,7 @@
 > mysql   
 > spring data jpa   
 > spring mvc
+>
 ### 各模块说明
  - wmall-web 控制层
  - wmall-service 业务逻辑层

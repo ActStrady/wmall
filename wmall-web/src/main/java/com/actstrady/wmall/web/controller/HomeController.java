@@ -5,7 +5,7 @@ import com.actstrady.wmall.service.*;
 import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.EvaluateList;
-import com.actstrady.wmall.vo.Goods4List;
+import com.actstrady.wmall.vo.GoodsVO;
 import com.actstrady.wmall.vo.ParentCategory;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,11 +54,11 @@ public class HomeController {
         // 给前端返回的数据
         Map<String, Object> homeMap = new HashMap<>(50);
         // 分页查询商品
-        List<Goods4List> goods = goodsService.getAll(9, 0);
+        List<GoodsVO> goods = goodsService.getAll(9, 0);
         // 获取热门商品
-        List<Goods4List> hotGoods = hotGoodsService.getTop();
+        List<GoodsVO> hotGoods = hotGoodsService.getTop();
         // 获取商品列表
-        List<Goods4List> newsGoods = goodsService.getNewsByTime();
+        List<GoodsVO> newsGoods = goodsService.getNewsByTime();
 
         // 添加结果
         homeMap.put("goods", goods);
@@ -71,7 +71,7 @@ public class HomeController {
             user = (User) httpSession.getAttribute(Constant.USER);
             int userId = user.getId();
             // 个性化推荐
-            List<Goods4List> recommendGoods = recommendService.getByUserId(userId);
+            List<GoodsVO> recommendGoods = recommendService.getByUserId(userId);
             homeMap.put("user", user);
             homeMap.put("recommendGoods", recommendGoods);
         }
@@ -103,7 +103,7 @@ public class HomeController {
                           @PathVariable("pageSize") int pageSize,
                           @PathVariable("pageIndex") int pageIndex) {
         // 通过分类获取商品
-        List<Goods4List> goods = goodsService.getByCategory(categoryId, pageSize, pageIndex);
+        List<GoodsVO> goods = goodsService.getByCategory(categoryId, pageSize, pageIndex);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
         result.setData(JSON.toJSONString(goods));
@@ -125,7 +125,7 @@ public class HomeController {
                                 @PathVariable("content") String content,
                                 @PathVariable("pageSize") int pageSize,
                                 @PathVariable("pageIndex") int pageIndex) {
-        List<Goods4List> goods = goodsService.getByName(content, pageSize, pageIndex);
+        List<GoodsVO> goods = goodsService.getByName(content, pageSize, pageIndex);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
         result.setData(JSON.toJSONString(goods));
@@ -141,11 +141,11 @@ public class HomeController {
     @GetMapping("productView/{gId}")
     public Result productView(@PathVariable("gId") int goodsId) {
         Map<String, Object> productMap = new HashMap<>();
-        Goods4List goods = goodsService.getById(goodsId);
+        GoodsVO goods = goodsService.getById(goodsId);
         // 评价信息
         List<EvaluateList> evaluates = evaluateService.getByGood(goodsId, 10, 0);
         // 同类型商品
-        List<Goods4List> similarGoods = similarGoodsService.getByGoodsId(goodsId);
+        List<GoodsVO> similarGoods = similarGoodsService.getByGoodsId(goodsId);
         productMap.put("goods", goods);
         productMap.put("evaluates", evaluates);
         productMap.put("similarGoods", similarGoods);

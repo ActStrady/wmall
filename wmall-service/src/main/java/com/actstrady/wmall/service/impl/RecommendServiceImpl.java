@@ -6,7 +6,7 @@ import com.actstrady.wmall.dao.RecommendDao;
 import com.actstrady.wmall.po.Goods;
 import com.actstrady.wmall.po.Recommend;
 import com.actstrady.wmall.service.RecommendService;
-import com.actstrady.wmall.vo.Goods4List;
+import com.actstrady.wmall.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,29 +19,28 @@ public class RecommendServiceImpl implements RecommendService {
     private final RecommendDao recommendDao;
     private final CategoryDao categoryDao;
 
-    @Autowired
     public RecommendServiceImpl(GoodsDao goodsDao, RecommendDao recommendDao, CategoryDao categoryDao) {
         this.goodsDao = goodsDao;
         this.recommendDao = recommendDao;
         this.categoryDao = categoryDao;
     }
 
-    private List<Goods4List> buildRecommendGoodsList(List<Recommend> recomendGoods) {
+    private List<GoodsVO> buildRecommendGoodsList(List<Recommend> recomendGoods) {
         if (recomendGoods == null || recomendGoods.size() == 0) {
             return new ArrayList<>(0);
         }
 
-        List<Goods4List> result = new ArrayList<>();
+        List<GoodsVO> result = new ArrayList<>();
         for (Recommend good : recomendGoods) {
             Goods item = goodsDao.getOne(good.getGoodsId());
-            Goods4List g4list = buildGoods(item);
+            GoodsVO g4list = buildGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private Goods4List buildGoods(Goods item) {
-        Goods4List result = new Goods4List();
+    private GoodsVO buildGoods(Goods item) {
+        GoodsVO result = new GoodsVO();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
         result.setPrice(item.getGoodsPrice());
@@ -54,7 +53,7 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     @Override
-    public List<Goods4List> getByUserId(int userId) {
+    public List<GoodsVO> getByUserId(int userId) {
         return buildRecommendGoodsList(recommendDao.getByUserId(userId));
     }
 }

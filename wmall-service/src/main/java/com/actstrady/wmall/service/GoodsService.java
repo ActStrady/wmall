@@ -1,7 +1,7 @@
 package com.actstrady.wmall.service;
 
 
-import com.actstrady.wmall.vo.Goods4List;
+import com.actstrady.wmall.vo.GoodsVO;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface GoodsService {
      * @param pageIndex 当前页码
      * @return 用于展示的商品列表
      */
-    public List<Goods4List> getAll(int pageSize, int pageIndex);
+    public List<GoodsVO> getAll(int pageSize, int pageIndex);
 
     /**
      * 通过分类查询
@@ -26,7 +26,7 @@ public interface GoodsService {
      * @param pageIndex
      * @return
      */
-    public List<Goods4List> getByCategory(int categoryId, int pageSize, int pageIndex);
+    public List<GoodsVO> getByCategory(int categoryId, int pageSize, int pageIndex);
 
     /**
      * 根据商品编号获取商品信息
@@ -34,7 +34,7 @@ public interface GoodsService {
      * @param goodsId 商品编号
      * @return 用于展示的商品列表
      */
-    public Goods4List getById(int goodsId);
+    public GoodsVO getById(int goodsId);
 
     /**
      * 根据商品名称获取指定商品信息
@@ -44,7 +44,7 @@ public interface GoodsService {
      * @param pageIndex 当前页码
      * @return 用于展示的商品列表
      */
-    public List<Goods4List> getByName(String goodsName, int pageSize, int pageIndex);
+    public List<GoodsVO> getByName(String goodsName, int pageSize, int pageIndex);
 
     /**
      * 根据物品编号更新物品的评价人数和评分
@@ -60,6 +60,6 @@ public interface GoodsService {
      *
      * @return 用于展示的商品列表
      */
-    public List<Goods4List> getNewsByTime();
+    public List<GoodsVO> getNewsByTime();
 
 }

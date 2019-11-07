@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.actstrady.wmall.vo.GoodsCartList;
+import com.actstrady.wmall.vo.GoodsCartVO;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface GoodsCartService {
      * @param pageIndex 当前页码
      * @return 购物车列表
      */
-    public List<GoodsCartList> getByUser(int userId, int status, int pageSize, int pageIndex);
+    public List<GoodsCartVO> getByUser(int userId, int status, int pageSize, int pageIndex);
 
     /**
      * 根据购物车编号删除购物车信息
@@ -41,7 +41,7 @@ public interface GoodsCartService {
      * @param status  购物车状态
      * @return
      */
-    public List<GoodsCartList> getByInfo(int userId, int goodsId, int status);
+    public List<GoodsCartVO> getByInfo(int userId, int goodsId, int status);
 
     /**
      * 插入一条购物数据
@@ -70,5 +70,5 @@ public interface GoodsCartService {
      * @param pageIndex 当前页码
      * @return 用于展示的商品列表
      */
-    public List<GoodsCartList> getPurchasedGoodByUserId(int userId, int pageSize, int pageIndex);
+    public List<GoodsCartVO> getPurchasedGoodByUserId(int userId, int pageSize, int pageIndex);
 }

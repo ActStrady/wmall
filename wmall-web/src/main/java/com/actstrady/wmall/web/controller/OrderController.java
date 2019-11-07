@@ -8,7 +8,7 @@ import com.actstrady.wmall.service.GoodsService;
 import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.EvaluateList;
-import com.actstrady.wmall.vo.GoodsCartList;
+import com.actstrady.wmall.vo.GoodsCartVO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,7 @@ public class OrderController {
         User user = (User) httpSession.getAttribute("user");
         int userId = user.getId();
         // 已购列表
-        List<GoodsCartList> carts = goodsCartService.getPurchasedGoodByUserId(userId, pageSize, pageIndex);
+        List<GoodsCartVO> carts = goodsCartService.getPurchasedGoodByUserId(userId, pageSize, pageIndex);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
         result.setData(JSON.toJSONString(JSON.toJSON(carts)));

@@ -9,7 +9,7 @@ import java.util.List;
  * 商品列表，用于在首页进行商品展示使用
  */
 @Data
-public class Goods4List {
+public class GoodsVO {
     private Integer id;
     private String name;
     private Double price;

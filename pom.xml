@@ -39,6 +39,7 @@
         <java.version>11</java.version>
         <druid.version>1.1.20</druid.version>
         <fastjson.version>1.2.62</fastjson.version>
+        <dozer.version>6.5.0</dozer.version>
     </properties>
     <!--使用主pom管理全部模块依赖的方式进行管理，
     父模块只提供版本定义，所以子模块需要用的时候自己引用，只是不需要写版本号-->
@@ -82,47 +83,12 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            <!--其余这些统统交给子模块，用那个引用那个-->
-            <!--jpa-->
-            <!--<dependency>-->
-            <!--    <groupId>org.springframework.boot</groupId>-->
-            <!--    <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--    <groupId>org.springframework.boot</groupId>-->
-            <!--    <artifactId>spring-boot-starter-webflux</artifactId>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-            <!--    <groupId>mysql</groupId>-->
-            <!--    <artifactId>mysql-connector-java</artifactId>-->
-            <!--    <scope>runtime</scope>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--    <groupId>org.projectlombok</groupId>-->
-            <!--    <artifactId>lombok</artifactId>-->
-            <!--    <optional>true</optional>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--    <groupId>org.springframework.boot</groupId>-->
-            <!--    <artifactId>spring-boot-starter-test</artifactId>-->
-            <!--    <scope>test</scope>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--    <groupId>io.projectreactor</groupId>-->
-            <!--    <artifactId>reactor-test</artifactId>-->
-            <!--    <scope>test</scope>-->
-            <!--</dependency>-->
+            <!--bean转化-->
+            <dependency>
+                <groupId>com.github.dozermapper</groupId>
+                <artifactId>dozer-spring-boot-starter</artifactId>
+                <version>${dozer.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!--父pom不负责打包，只负责依赖管理-->
-    <!--<build>-->
-    <!--    <plugins>-->
-    <!--        <plugin>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-maven-plugin</artifactId>-->
-    <!--        </plugin>-->
-    <!--    </plugins>-->
-    <!--</build>-->
 </project>
