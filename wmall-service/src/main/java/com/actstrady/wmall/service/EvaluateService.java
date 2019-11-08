@@ -6,7 +6,7 @@ import com.actstrady.wmall.vo.EvaluateVO;
 import java.util.List;
 
 /**
- * 商品服务类
+ * 评价
  */
 public interface EvaluateService {
     /**

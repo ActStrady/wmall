@@ -9,12 +9,12 @@ import java.util.Date;
  */
 @Data
 public class EvaluateVO {
-    private int id;
-    private int userId;
+    private Integer id;
+    private Integer userId;
     private String userName;
-    private int goodsId;
-    private int cartId;
-    private double grade;
+    private Integer goodsId;
+    private Integer cartId;
+    private Double grade;
     private String comment;
     private Date createTime;
 }

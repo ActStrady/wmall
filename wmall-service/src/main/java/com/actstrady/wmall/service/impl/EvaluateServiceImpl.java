@@ -1,11 +1,15 @@
 package com.actstrady.wmall.service.impl;
 
 import com.actstrady.wmall.dao.EvaluateDao;
+import com.actstrady.wmall.dao.UserDao;
 import com.actstrady.wmall.po.EvaluatePO;
+import com.actstrady.wmall.po.UserPO;
 import com.actstrady.wmall.service.EvaluateService;
 import com.actstrady.wmall.utils.ListCopy;
 import com.actstrady.wmall.vo.EvaluateVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,52 +18,34 @@ import java.util.List;
 @Slf4j
 public class EvaluateServiceImpl implements EvaluateService {
     private final EvaluateDao evaluateDao;
+    private final UserDao userDao;
     private final ListCopy<EvaluatePO, EvaluateVO> listCopy;
 
-    public EvaluateServiceImpl(EvaluateDao evaluateDao, ListCopy listCopy) {
+    public EvaluateServiceImpl(EvaluateDao evaluateDao, UserDao userDao, ListCopy<EvaluatePO, EvaluateVO> listCopy) {
         this.evaluateDao = evaluateDao;
+        this.userDao = userDao;
         this.listCopy = listCopy;
-    }
-
-    // private List<EvaluateVO> buildEvaluateList(List<Evaluate> evaluates) {
-    //     if (evaluates == null || evaluates.size() == 0) {
-    //         return new ArrayList<>(0);
-    //     }
-    //     List<EvaluateVO> result = new ArrayList<>();
-    //     for (Evaluate item : evaluates) {
-    //         EvaluateVO elst = buildEvaluate(item);
-    //         result.add(elst);
-    //     }
-    //     return result;
-    // }
-
-    private EvaluateVO buildEvaluate(EvaluatePO item) {
-        EvaluateVO elst = new EvaluateVO();
-        elst.setId(item.getId());
-        elst.setUserId(item.getUserId());
-        elst.setGoodsId(item.getGoodsId());
-        elst.setComment(item.getComment());
-        elst.setGrade(item.getGrade());
-        elst.setUserName(item.getUserName());
-        elst.setCreateTime(item.getCreateTime());
-        elst.setCartId(item.getCartId());
-        return elst;
     }
 
     @Override
     public List<EvaluateVO> getByGood(int goodsId, int pageSize, int pageIndex) {
-        return listCopy.listBuild(evaluateDao.getByGoodsId(goodsId, pageIndex * pageSize, pageSize), EvaluateVO.class);
+        Page<EvaluatePO> pageEvaluate = evaluateDao.getByGoodsId(goodsId, PageRequest.of(pageIndex * pageSize, pageSize));
+        // 获取评价人姓名
+        List<EvaluateVO> evaluateVOList = listCopy.listBuild(pageEvaluate.getContent(), EvaluateVO.class);
+        for (EvaluateVO evaluateVO : evaluateVOList) {
+            UserPO user = userDao.getOne(evaluateVO.getUserId());
+            evaluateVO.setUserName(user.getUsername());
+        }
+        return evaluateVOList;
     }
 
     @Override
     public EvaluateVO getByCartId(int cartId) {
-        return buildEvaluate(evaluateDao.getByCartId(cartId));
+        return listCopy.beanBuild(evaluateDao.getByCartId(cartId), EvaluateVO.class);
     }
 
     @Override
     public EvaluatePO insertEvaluateInfo(EvaluatePO data) {
         return evaluateDao.save(data);
     }
-
-    ;
 }

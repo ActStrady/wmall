@@ -16,10 +16,6 @@ public class EvaluatePO {
     private Integer id;
     @Column(name = "userid")
     private Integer userId;
-    // 不映射此字段
-    @Transient
-    @Column(name = "username")
-    private String userName;
     @Column(name = "goodsid")
     private Integer goodsId;
     @Column(name = "cartid")
