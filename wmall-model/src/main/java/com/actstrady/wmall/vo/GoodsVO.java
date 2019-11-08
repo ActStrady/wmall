@@ -1,7 +1,6 @@
 package com.actstrady.wmall.vo;
 
 import com.actstrady.wmall.po.CategoryPO;
-import com.github.dozermapper.core.Mapping;
 import lombok.Data;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class GoodsVO {
     private String slide_2;
     private String slide_3;
     private String slide_4;
-    @Mapping("category")
-    private CategoryPO categoryPO;
+    private CategoryPO category;
     private List<String> detailPicture;
 }

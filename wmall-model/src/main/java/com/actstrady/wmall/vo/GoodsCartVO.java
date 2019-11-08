@@ -13,8 +13,7 @@ public class GoodsCartVO {
     private Integer goodsId;
     private Date createTime;
     private Integer status;
-    private String statusDesc;
-    private GoodsPO goodsPO;
+    private GoodsPO goods;
     private Integer parentCategoryId;
     private Integer evaluateId;
 }

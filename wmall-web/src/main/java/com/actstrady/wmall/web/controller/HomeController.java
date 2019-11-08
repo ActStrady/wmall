@@ -77,7 +77,7 @@ public class HomeController {
         }
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
-        result.setData(JSON.toJSONString(homeMap));
+        result.setData(JSON.toJSONString(JSON.toJSON(homeMap)));
         return result;
     }
 
@@ -144,7 +144,6 @@ public class HomeController {
         GoodsVO goods = goodsService.getById(goodsId);
         // 评价信息
         List<EvaluateVO> evaluates = evaluateService.getByGood(goodsId, 10, 0);
-
         // 同类型商品
         List<GoodsVO> similarGoods = similarGoodsService.getByGoodsId(goodsId);
         productMap.put("goods", goods);

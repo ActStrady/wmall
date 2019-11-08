@@ -55,7 +55,7 @@ public class CartController {
         }
     }
 
-    @GetMapping("buyGoods")
+    @PostMapping("buyGoods")
     public void buyGoods(@RequestBody List<GoodsCartVO> arr) {
         for (GoodsCartVO cart : arr) {
             goodsCartService.updateById(cart.getId(), cart.getNumber());

@@ -8,12 +8,12 @@ import com.actstrady.wmall.po.EvaluatePO;
 import com.actstrady.wmall.po.GoodsPO;
 import com.actstrady.wmall.po.GoodsCartPO;
 import com.actstrady.wmall.service.GoodsCartService;
+import com.actstrady.wmall.utils.ListCopy;
 import com.actstrady.wmall.vo.GoodsCartVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,49 +23,38 @@ public class GoodsCartServiceImpl implements GoodsCartService {
     private final GoodsDao goodsDao;
     private final CategoryDao categoryDao;
     private final EvaluateDao evaluateDao;
+    private final ListCopy<GoodsCartPO, GoodsCartVO> listCopy;
 
-    public GoodsCartServiceImpl(GoodsCartDao goodsCartDao, GoodsDao goodsDao, CategoryDao categoryDao, EvaluateDao evaluateDao) {
+    public GoodsCartServiceImpl(GoodsCartDao goodsCartDao, GoodsDao goodsDao, CategoryDao categoryDao, EvaluateDao evaluateDao, ListCopy<GoodsCartPO, GoodsCartVO> listCopy) {
         this.goodsCartDao = goodsCartDao;
         this.goodsDao = goodsDao;
         this.categoryDao = categoryDao;
         this.evaluateDao = evaluateDao;
+        this.listCopy = listCopy;
     }
 
-    private List<GoodsCartVO> buildGoodsCartList(List<GoodsCartPO> goodsCartPOS) {
-        if (goodsCartPOS == null || goodsCartPOS.size() == 0) {
-            return new ArrayList<>(0);
+    /**
+     * 添加额外的属性
+     * @param goodsCarts 原list
+     */
+    private void addAttribute(List<GoodsCartVO> goodsCarts) {
+        for (GoodsCartVO goodsCart : goodsCarts) {
+            GoodsPO goods = goodsDao.getOne(goodsCart.getGoodsId());
+            goodsCart.setGoods(goods);
+            goodsCart.setParentCategoryId(categoryDao.getOne(goods.getCategoryId()).getParentId());
+            EvaluatePO evaluate = evaluateDao.getByCartId(goodsCart.getId());
+            if (evaluate != null) {
+                goodsCart.setEvaluateId(evaluate.getId());
+            }
         }
-
-        List<GoodsCartVO> result = new ArrayList<>();
-        for (GoodsCartPO item : goodsCartPOS) {
-            GoodsCartVO gList = buildGoodsCart(item);
-            result.add(gList);
-        }
-        return result;
-    }
-
-    private GoodsCartVO buildGoodsCart(GoodsCartPO goodsCartPO) {
-        GoodsCartVO item = new GoodsCartVO();
-        item.setId(goodsCartPO.getId());
-        item.setUserId(goodsCartPO.getUserId());
-        item.setGoodsId(goodsCartPO.getGoodsId());
-        item.setNumber(goodsCartPO.getNumber());
-        item.setStatus(goodsCartPO.getStatus());
-        item.setCreateTime(goodsCartPO.getCreateTime());
-        GoodsPO goodInfo = goodsDao.getOne(goodsCartPO.getGoodsId());
-        item.setGoodsPO(goodInfo);
-        item.setParentCategoryId(categoryDao.getOne(goodInfo.getCategoryId()).getParentId());
-        EvaluatePO eList = evaluateDao.getByCartId(goodsCartPO.getId());
-        if (eList != null) {
-            item.setEvaluateId(eList.getId());
-        }
-        return item;
     }
 
     @Override
     public List<GoodsCartVO> getByUser(int userId, int status, int pageSize, int pageIndex) {
-        Page<GoodsCartPO> goodsPage = goodsCartDao.getByUserIdAndStatus(userId, status, PageRequest.of(pageIndex * pageSize, pageSize));
-        return buildGoodsCartList(goodsPage.getContent());
+        Page<GoodsCartPO> goodsCartsPage = goodsCartDao.getByUserIdAndStatus(userId, status, PageRequest.of(pageIndex * pageSize, pageSize));
+        List<GoodsCartVO> goodsCarts = listCopy.listBuild(goodsCartsPage.getContent(), GoodsCartVO.class);
+        addAttribute(goodsCarts);
+        return goodsCarts;
     }
 
     @Override
@@ -75,34 +64,37 @@ public class GoodsCartServiceImpl implements GoodsCartService {
 
     @Override
     public void updateById(int cartId, int number) {
-        GoodsCartPO goodsCartPO = goodsCartDao.getOne(cartId);
-        goodsCartPO.setNumber(number);
-        goodsCartPO.setStatus(1);
-        goodsCartDao.save(goodsCartPO);
+        GoodsCartPO goodsCart = goodsCartDao.getOne(cartId);
+        goodsCart.setNumber(number);
+        goodsCart.setStatus(1);
+        goodsCartDao.save(goodsCart);
     }
 
     @Override
     public List<GoodsCartVO> getByInfo(int userId, int goodsId, int status) {
-        return buildGoodsCartList(goodsCartDao.getByUserIdAndStatusAndGoodsId(userId, goodsId, status));
+        List<GoodsCartPO> goodsCartPos = goodsCartDao.getByUserIdAndStatusAndGoodsId(userId, goodsId, status);
+        List<GoodsCartVO> goodsCartVos = listCopy.listBuild(goodsCartPos, GoodsCartVO.class);
+        addAttribute(goodsCartVos);
+        return goodsCartVos;
     }
 
     @Override
     public void insertCartInfo(int userId, int goodsId, int number, int status) {
-        GoodsCartPO goodsCartPO = new GoodsCartPO();
-        goodsCartPO.setUserId(userId);
-        goodsCartPO.setGoodsId(goodsId);
-        goodsCartPO.setNumber(number);
-        goodsCartPO.setStatus(status);
-        goodsCartPO.setCreateTime(new Date());
-        goodsCartDao.save(goodsCartPO);
+        GoodsCartPO goodsCart = new GoodsCartPO();
+        goodsCart.setUserId(userId);
+        goodsCart.setGoodsId(goodsId);
+        goodsCart.setNumber(number);
+        goodsCart.setStatus(status);
+        goodsCart.setCreateTime(new Date());
+        goodsCartDao.save(goodsCart);
     }
 
     @Override
     public void addCartCountById(int cartId) {
-        GoodsCartPO goodsCartPO = goodsCartDao.getOne(cartId);
-        goodsCartPO.setNumber(goodsCartPO.getNumber() + 1);
-        goodsCartPO.setCreateTime(new Date());
-        goodsCartDao.save(goodsCartPO);
+        GoodsCartPO goodsCart = goodsCartDao.getOne(cartId);
+        goodsCart.setNumber(goodsCart.getNumber() + 1);
+        goodsCart.setCreateTime(new Date());
+        goodsCartDao.save(goodsCart);
     }
 
     /**
@@ -116,6 +108,8 @@ public class GoodsCartServiceImpl implements GoodsCartService {
     @Override
     public List<GoodsCartVO> getPurchasedGoodByUserId(int userId, int pageSize, int pageIndex) {
         Page<GoodsCartPO> goodsCartsPage = goodsCartDao.getByUserIdAndStatus(userId, 1, PageRequest.of(pageIndex * pageSize, pageSize));
-        return buildGoodsCartList(goodsCartsPage.getContent());
+        List<GoodsCartVO> goodsCarts = listCopy.listBuild(goodsCartsPage.getContent(), GoodsCartVO.class);
+        addAttribute(goodsCarts);
+        return goodsCarts;
     }
 }

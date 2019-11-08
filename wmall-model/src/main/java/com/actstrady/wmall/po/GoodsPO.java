@@ -1,5 +1,6 @@
 package com.actstrady.wmall.po;
 
+import com.github.dozermapper.core.Mapping;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class GoodsPO {
     @Column(name = "ranknum")
     private Integer rankNum;
     @Column(name = "detailpicture")
+    @Mapping("this")
     private String detailPicture;
     @Column(name = "createtime")
     private Date createTime;

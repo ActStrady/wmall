@@ -50,7 +50,7 @@ public class HotGoodsServiceImpl implements HotGoodsService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategoryPO(categoryDao.getOne(item.getCategoryId()));
+        result.setCategory(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
         return result;
     }

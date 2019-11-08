@@ -31,12 +31,12 @@ public class EvaluateServiceImpl implements EvaluateService {
     public List<EvaluateVO> getByGood(int goodsId, int pageSize, int pageIndex) {
         Page<EvaluatePO> pageEvaluate = evaluateDao.getByGoodsId(goodsId, PageRequest.of(pageIndex * pageSize, pageSize));
         // 获取评价人姓名
-        List<EvaluateVO> evaluateVOList = listCopy.listBuild(pageEvaluate.getContent(), EvaluateVO.class);
-        for (EvaluateVO evaluateVO : evaluateVOList) {
+        List<EvaluateVO> evaluates = listCopy.listBuild(pageEvaluate.getContent(), EvaluateVO.class);
+        for (EvaluateVO evaluateVO : evaluates) {
             UserPO user = userDao.getOne(evaluateVO.getUserId());
             evaluateVO.setUserName(user.getUsername());
         }
-        return evaluateVOList;
+        return evaluates;
     }
 
     @Override
