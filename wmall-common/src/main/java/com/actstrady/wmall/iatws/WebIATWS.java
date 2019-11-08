@@ -119,12 +119,10 @@ public class WebIATWS extends WebSocketListener {
                             data2.addProperty("encoding", "raw");
                             frame2.add("data", data2);
                             webSocket.send(frame2.toString());
-                            System.out.println("sendlast");
                             break end;
                     }
                     Thread.sleep(intervel); //模拟音频采样延时
                 }
-                System.out.println("all data is send");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -178,19 +176,11 @@ public class WebIATWS extends WebSocketListener {
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
         super.onFailure(webSocket, t, response);
-        try {
-            if (null != response) {
-                int code = response.code();
-                System.out.println("onFailure code:" + code);
-                System.out.println("onFailure body:" + response.body().string());
-                if (101 != code) {
-                    System.out.println("connection failed");
-                    System.exit(0);
-                }
+        if (null != response) {
+            int code = response.code();
+            if (101 != code) {
+                System.exit(0);
             }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
@@ -208,7 +198,7 @@ public class WebIATWS extends WebSocketListener {
     }
 
     // 自己封装的入口
-    public ResponseVo getMessage(String fileName) throws Exception  {
+    public ResponseVo getMessage(String fileName) throws Exception {
         // 构建鉴权url
         String authUrl = getAuthUrl(hostUrl, apiKey, apiSecret);
         OkHttpClient client = new OkHttpClient.Builder().build();

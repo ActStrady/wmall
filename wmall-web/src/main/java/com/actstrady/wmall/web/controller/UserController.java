@@ -98,7 +98,7 @@ public class UserController {
     }
 
     /**
-     * 查询喜好列表(暂时这样)
+     * 查询喜好列表
      *
      * @param httpSession session
      * @return 成功否

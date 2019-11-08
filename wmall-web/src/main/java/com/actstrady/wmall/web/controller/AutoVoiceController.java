@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * 语音搜索
+ *
  * @author : ActStrady@tom.com
  * @date : 2019/11/6 17:24
  * @fileName : AutoVoiceController.java
@@ -24,6 +26,7 @@ import java.io.IOException;
 @Slf4j
 public class AutoVoiceController {
     private static final String FFMPEG_PATH = "D:\\Program Files\\ffmpeg\\bin\\";
+
     /**
      * 语音转文字
      * 整体思路，前端传文件，后端使用MultipartFile来接收，然后转成一个.wav文件
@@ -85,6 +88,6 @@ public class AutoVoiceController {
 
     @RequestMapping("/iat")
     public ResponseVo iat(HttpSession session) {
-        return (ResponseVo)session.getAttribute("iat_message");
+        return (ResponseVo) session.getAttribute("iat_message");
     }
 }

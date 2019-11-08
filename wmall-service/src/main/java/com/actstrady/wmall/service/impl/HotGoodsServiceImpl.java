@@ -44,7 +44,6 @@ public class HotGoodsServiceImpl implements HotGoodsService {
         for (HotGoodsPO hotGood : hotGoodPos) {
             GoodsPO goodsPo = goodsDao.getOne(hotGood.getGoodsId());
             GoodsVO goodsVo = listCopy.beanBuild(goodsPo, GoodsVO.class);
-            System.out.println(goodsVo);
             goodsVo.setCategory(categoryDao.getOne(goodsVo.getCategoryId()));
             result.add(goodsVo);
         }

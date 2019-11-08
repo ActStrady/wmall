@@ -3,6 +3,7 @@ package com.actstrady.wmall.service.impl;
 import com.actstrady.wmall.dao.PreferDao;
 import com.actstrady.wmall.po.PreferPO;
 import com.actstrady.wmall.service.PreferService;
+import com.actstrady.wmall.utils.ListCopy;
 import com.actstrady.wmall.vo.PreferVO;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class PreferServiceImpl implements PreferService {
     private final PreferDao preferDao;
+    private final ListCopy<PreferPO, PreferVO> listCopy;
 
-    public PreferServiceImpl(PreferDao preferDao) {
+    public PreferServiceImpl(PreferDao preferDao, ListCopy<PreferPO, PreferVO> listCopy) {
         this.preferDao = preferDao;
+        this.listCopy = listCopy;
     }
 
     private List<PreferVO> buildPreferList(List<PreferPO> preferPos) {
@@ -23,20 +26,11 @@ public class PreferServiceImpl implements PreferService {
             return new ArrayList<PreferVO>(0);
         }
         List<PreferVO> result = new ArrayList<>();
-        for (PreferPO item : preferPos) {
-            PreferVO glist = buildPrefer(item);
-            result.add(glist);
+        for (PreferPO preferPo : preferPos) {
+            PreferVO preferVo = listCopy.beanBuild(preferPo, PreferVO.class);
+            result.add(preferVo);
         }
         return result;
-    }
-
-    private PreferVO buildPrefer(PreferPO preferPO) {
-        PreferVO item = new PreferVO();
-        item.setUserId(preferPO.getUserId());
-        item.setCategoryId(preferPO.getCategoryId());
-        item.setId(preferPO.getId());
-        item.setCreateTime(preferPO.getCreateTime());
-        return item;
     }
 
     @Override
@@ -46,10 +40,10 @@ public class PreferServiceImpl implements PreferService {
 
     @Override
     public void insertInfo(int userId, int categoryId) {
-        PreferPO preferPO = new PreferPO();
-        preferPO.setUserId(userId);
-        preferPO.setCategoryId(categoryId);
-        preferPO.setCreateTime(new Date());
-        preferDao.save(preferPO);
+        PreferPO preferPo = new PreferPO();
+        preferPo.setUserId(userId);
+        preferPo.setCategoryId(categoryId);
+        preferPo.setCreateTime(new Date());
+        preferDao.save(preferPo);
     }
 }

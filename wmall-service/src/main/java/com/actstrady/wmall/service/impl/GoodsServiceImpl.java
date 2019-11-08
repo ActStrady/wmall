@@ -59,12 +59,9 @@ public class GoodsServiceImpl implements GoodsService {
         goodsVo.setSlide2(sp[1].substring(1, sp[1].length() - 1));
         goodsVo.setSlide3(sp[2].substring(1, sp[2].length() - 1));
         goodsVo.setSlide4(sp[3].substring(1, sp[3].length() - 1));
-        System.out.println(goodsPo);
-        System.out.println(goodsVo);
         //处理detail图片
         if (goodsPo.getDetailPictures() != null) {
             String details = goodsPo.getDetailPictures();
-            System.out.println(details);
             List<String> sList = new ArrayList<>();
             if (details.length() > 2) {
                 details = details.substring(1, details.length() - 1);
@@ -80,9 +77,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsVO> getByName(String goodsName, int pageSize, int pageIndex) {
-        System.out.println(goodsName);
         Page<GoodsPO> goodsPage = goodsDao.getByGoodsNameContaining(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
-        System.out.println(goodsPage);
         List<GoodsVO> goodsVos = listCopy.listBuild(goodsPage.getContent(), GoodsVO.class);
         for (GoodsVO goodsVo : goodsVos) {
             goodsVo.setCategory(categoryDao.getOne(goodsVo.getCategoryId()));
