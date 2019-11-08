@@ -1,7 +1,7 @@
 package com.actstrady.wmall.service;
 
 
-import com.actstrady.wmall.vo.ParentCategory;
+import com.actstrady.wmall.vo.ParentCategoryVO;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface CategoryService {
      * 获取所有的一级分类信息
      * @return 一级分类列表
      */
-    public List<ParentCategory> getCategories();
+    public List<ParentCategoryVO> getCategories();
 }

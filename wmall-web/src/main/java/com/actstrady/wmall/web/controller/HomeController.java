@@ -6,7 +6,7 @@ import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
 import com.actstrady.wmall.vo.EvaluateVO;
 import com.actstrady.wmall.vo.GoodsVO;
-import com.actstrady.wmall.vo.ParentCategory;
+import com.actstrady.wmall.vo.ParentCategoryVO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -84,7 +84,7 @@ public class HomeController {
     @GetMapping("head")
     public Result head() {
         // 菜单列表
-        List<ParentCategory> categories = categoryService.getCategories();
+        List<ParentCategoryVO> categories = categoryService.getCategories();
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
         result.setData(JSON.toJSONString(categories));
