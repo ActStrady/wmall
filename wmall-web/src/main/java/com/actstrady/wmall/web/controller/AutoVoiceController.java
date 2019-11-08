@@ -34,10 +34,10 @@ public class AutoVoiceController {
      * 后传到前端
      *
      * @param multfile 接收前台传的文件
-     * @param mode
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
+     * @param mode mode
+     * @return 语音识别结果
+     * @throws IOException IO异常
+     * @throws InterruptedException InterruptedException
      */
     @PostMapping("/transform")
     public String upload(@RequestParam(value = "wavData", required = false) MultipartFile multfile, Model mode) throws IOException, InterruptedException {
@@ -52,9 +52,6 @@ public class AutoVoiceController {
         String temp = relativelyPath + File.separator + "temp";
         log.info(temp);
         File tempFile = new File(temp);
-        if (!tempFile.exists()) {
-            tempFile.mkdir();
-        }
         String destTemp = temp + File.separator + iatFile.getName().substring(0, iatFile.getName().lastIndexOf(".")) + ".pcm";
         // 调用cmd程序，转成pcm格式文件
         String command = FFMPEG_PATH + "ffmpeg -y -i " + iatFile + " -acodec pcm_s16le -f s16le -ac 1 -ar 16000 " + destTemp;

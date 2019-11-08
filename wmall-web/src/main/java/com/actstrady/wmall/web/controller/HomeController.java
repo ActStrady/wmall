@@ -47,7 +47,7 @@ public class HomeController {
      * 系统首页
      *
      * @param model ViewModel
-     * @return
+     * @return 首页数据
      */
     @GetMapping("data")
     public Result index(Model model, HttpSession httpSession) {
@@ -66,7 +66,7 @@ public class HomeController {
         homeMap.put("newsGoods", newsGoods);
 
         // 通过用户来推荐
-        UserPO user = new UserPO();
+        UserPO user;
         if (httpSession.getAttribute(Constant.USER) != null) {
             user = (UserPO) httpSession.getAttribute(Constant.USER);
             int userId = user.getId();
@@ -81,6 +81,11 @@ public class HomeController {
         return result;
     }
 
+    /**
+     * 获取菜单信息
+     *
+     * @return 菜单信息
+     */
     @GetMapping("head")
     public Result head() {
         // 菜单列表
@@ -90,16 +95,18 @@ public class HomeController {
         result.setData(JSON.toJSONString(categories));
         return result;
     }
+
     /**
-     * @param model
-     * @param categoryId
-     * @param pageSize
-     * @param pageIndex
-     * @return
+     * 、
+     * 分类获取
+     *
+     * @param categoryId 分类id
+     * @param pageSize 条数
+     * @param pageIndex 页
+     * @return 分类数据
      */
     @GetMapping("product/{cId}/{pageSize}/{pageIndex}")
-    public Result product(Model model, HttpSession httpSession,
-                          @PathVariable("cId") int categoryId,
+    public Result product(@PathVariable("cId") int categoryId,
                           @PathVariable("pageSize") int pageSize,
                           @PathVariable("pageIndex") int pageIndex) {
         // 通过分类获取商品
@@ -113,16 +120,13 @@ public class HomeController {
     /**
      * 搜索
      *
-     * @param model
-     * @param content
-     * @param pageSize
-     * @param pageIndex
-     * @param httpSession
-     * @return
+     * @param content 搜索内容
+     * @param pageSize 条数
+     * @param pageIndex 页
+     * @return 搜索数据
      */
     @GetMapping("product/search/{content}/{pageSize}/{pageIndex}")
-    public Result productSearch(Model model, HttpSession httpSession,
-                                @PathVariable("content") String content,
+    public Result productSearch(@PathVariable("content") String content,
                                 @PathVariable("pageSize") int pageSize,
                                 @PathVariable("pageIndex") int pageIndex) {
         List<GoodsVO> goods = goodsService.getByName(content, pageSize, pageIndex);
@@ -135,8 +139,8 @@ public class HomeController {
     /**
      * 物品详情页
      *
-     * @param goodsId
-     * @return
+     * @param goodsId 物品id
+     * @return 详情数据
      */
     @GetMapping("productView/{gId}")
     public Result productView(@PathVariable("gId") int goodsId) {

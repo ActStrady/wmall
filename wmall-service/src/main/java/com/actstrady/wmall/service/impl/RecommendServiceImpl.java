@@ -36,7 +36,9 @@ public class RecommendServiceImpl implements RecommendService {
         List<GoodsVO> result = new ArrayList<>();
         for (RecommendPO recommend : recommendationGoods) {
             GoodsPO goodsPo = goodsDao.getOne(recommend.getGoodsId());
+            System.out.println(goodsPo);
             GoodsVO goodsVO = listCopy.beanBuild(goodsPo, GoodsVO.class);
+            System.out.println(goodsVO);
             goodsVO.setCategory(categoryDao.getOne(goodsVO.getCategoryId()));
             result.add(goodsVO);
         }

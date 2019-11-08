@@ -36,9 +36,9 @@ public class OrderController {
     /**
      * 订单列表页
      *
-     * @param pageSize
-     * @param pageIndex
-     * @return
+     * @param pageSize 条数
+     * @param pageIndex 页
+     * @return 我的订单
      */
     @GetMapping("orderView/{pageSize}/{pageIndex}")
     public Result orderView(HttpSession httpSession,
@@ -57,11 +57,11 @@ public class OrderController {
     /**
      * 添加评价
      *
-     * @param data
-     * @param httpSession
-     * @return
+     * @param data 评价信息
+     * @param httpSession httpSession
+     * @return 成功否
      */
-    @GetMapping("addEvaluation")
+    @PostMapping("addEvaluation")
     public boolean addEvaluation(@RequestBody EvaluatePO data, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
             int userId = ((UserPO) httpSession.getAttribute("user")).getId();
@@ -78,9 +78,13 @@ public class OrderController {
         return false;
     }
 
-    @GetMapping("getByCartId")
+    /**
+     * 获取订单评价
+     * @param data 评价
+     * @return 评价
+     */
+    @PostMapping("getByCartId")
     public EvaluateVO getByCartId(@RequestBody EvaluatePO data) {
-        EvaluateVO result = evaluateService.getByCartId(data.getCartId());
-        return result;
+        return evaluateService.getByCartId(data.getCartId());
     }
 }

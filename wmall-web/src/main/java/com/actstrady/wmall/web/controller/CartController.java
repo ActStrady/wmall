@@ -27,9 +27,9 @@ public class CartController {
     /**
      * 购物车列表页
      *
-     * @param pageSize
-     * @param pageIndex
-     * @return
+     * @param pageSize  条数
+     * @param pageIndex 第几页
+     * @return 购物车列表数据
      */
     @GetMapping("cartView/{pageSize}/{pageIndex}")
     public Result cartView(@PathVariable("pageSize") int pageSize, @PathVariable("pageIndex") int pageIndex, HttpSession httpSession) {
@@ -44,10 +44,11 @@ public class CartController {
     }
 
     /**
-     * 删购物车
-     * @param cartIds
+     * 删购物车信息
+     *
+     * @param cartIds 购物车id
      */
-    @GetMapping("deleteCartByIds/{cartIds}")
+    @PostMapping("deleteCartByIds/{cartIds}")
     public void deleteCartByIds(@PathVariable("cartIds") String cartIds) {
         String[] strs = cartIds.split(",");
         for (String str : strs) {
@@ -56,7 +57,8 @@ public class CartController {
     }
 
     /**
-     * 购物
+     * 购物车购买
+     *
      * @param arr 购买参数
      */
     @PostMapping("buyGoods")
@@ -67,10 +69,11 @@ public class CartController {
     }
 
     /**
-     *  添加购物车
-     * @param cart
-     * @param httpSession
-     * @return
+     * 添加购物车
+     *
+     * @param cart        购物信息
+     * @param httpSession httpSession
+     * @return 成功否
      */
     @PostMapping("addCart")
     public boolean addCart(@RequestBody GoodsCartVO cart, HttpSession httpSession) {
@@ -91,6 +94,13 @@ public class CartController {
 
     }
 
+    /**
+     * 直接购买
+     *
+     * @param cart 购买信息
+     * @param httpSession httpSession
+     * @return 购买成功否
+     */
     @PostMapping("buyGoodQuick")
     public boolean buyGoodQuick(@RequestBody GoodsCartVO cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
