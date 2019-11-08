@@ -1,6 +1,6 @@
 package com.actstrady.wmall.dao;
 
-import com.actstrady.wmall.po.SimilarPurchased;
+import com.actstrady.wmall.po.SimilarPurchasedPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,6 +13,6 @@ import java.util.List;
  * @fileName : SimilarPurchased.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-public interface SimilarPurchasedDao extends JpaRepository<SimilarPurchased, Integer> {
-    List<SimilarPurchased> getByGoodsId(Integer goods);
+public interface SimilarPurchasedDao extends JpaRepository<SimilarPurchasedPO, Integer> {
+    List<SimilarPurchasedPO> getByGoodsId(Integer goods);
 }

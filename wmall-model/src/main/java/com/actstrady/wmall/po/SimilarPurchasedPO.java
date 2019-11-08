@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Data
 @Entity(name = "similarpurchased")
-public class SimilarPurchased {
+public class SimilarPurchasedPO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

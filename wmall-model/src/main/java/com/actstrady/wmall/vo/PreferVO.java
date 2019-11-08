@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PreferList {
+public class PreferVO {
     private int id;
     private int userId;
     private int categoryId;

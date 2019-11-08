@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity(name = "category")
-public class Category {
+public class CategoryPO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

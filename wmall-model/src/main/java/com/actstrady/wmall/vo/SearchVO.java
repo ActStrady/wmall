@@ -3,7 +3,7 @@ package com.actstrady.wmall.vo;
 import lombok.Data;
 
 @Data
-public class SearchList {
+public class SearchVO {
     /**
      * 返回消息
      */

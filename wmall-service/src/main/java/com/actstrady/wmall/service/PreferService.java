@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.actstrady.wmall.vo.PreferList;
+import com.actstrady.wmall.vo.PreferVO;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface PreferService {
      * @param userId 用户编号
      * @return 喜好列表
      */
-    public List<PreferList> getByUserId(int userId);
+    public List<PreferVO> getByUserId(int userId);
 
     /**
      * 插入一条用户喜欢数据

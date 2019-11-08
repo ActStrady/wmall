@@ -8,9 +8,9 @@ import java.util.Date;
 /**
  * 数据表Prefer映射类
  */
-@Entity
 @Data
-public class Prefer {
+@Entity(name = "prefer")
+public class PreferPO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -9,8 +9,8 @@ import java.util.Date;
  * 数据表Goods映射类
  */
 @Data
-@Entity
-public class Goods {
+@Entity(name = "goods")
+public class GoodsPO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

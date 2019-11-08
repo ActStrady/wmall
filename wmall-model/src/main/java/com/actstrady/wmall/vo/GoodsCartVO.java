@@ -1,6 +1,6 @@
 package com.actstrady.wmall.vo;
 
-import com.actstrady.wmall.po.Goods;
+import com.actstrady.wmall.po.GoodsPO;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,7 +14,7 @@ public class GoodsCartVO {
     private Date createTime;
     private Integer status;
     private String statusDesc;
-    private Goods goods;
+    private GoodsPO goodsPO;
     private Integer parentCategoryId;
     private Integer evaluateId;
 }

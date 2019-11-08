@@ -1,6 +1,6 @@
 package com.actstrady.wmall.dao;
 
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.UserPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @fileName : UserDao.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-public interface UserDao extends JpaRepository<User, Integer> {
-    User getByUsernameAndPassword(String username, String password);
-    User getByUsername(String username);
+public interface UserDao extends JpaRepository<UserPO, Integer> {
+    UserPO getByUsernameAndPassword(String username, String password);
+    UserPO getByUsername(String username);
 }

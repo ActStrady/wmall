@@ -1,6 +1,6 @@
 package com.actstrady.wmall.service;
 
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.UserPO;
 
 /**
  * @author : ActStrady@tom.com
@@ -14,7 +14,7 @@ public interface UserService {
      * @param user 用户
      * @return 用户
      */
-    User login(User user);
+    UserPO login(UserPO user);
 
     /**
      * 检查是否以及注册
@@ -28,5 +28,5 @@ public interface UserService {
      * @param user user对象
      * @return 影响行数
      */
-     Boolean registered(User user);
+     Boolean registered(UserPO user);
 }

@@ -2,11 +2,10 @@ package com.actstrady.wmall.service.impl;
 
 import com.actstrady.wmall.dao.CategoryDao;
 import com.actstrady.wmall.dao.GoodsDao;
-import com.actstrady.wmall.po.Goods;
+import com.actstrady.wmall.po.GoodsPO;
 import com.actstrady.wmall.service.GoodsService;
 import com.actstrady.wmall.vo.GoodsVO;
 import com.github.dozermapper.core.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,33 +25,33 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     // 封装成页面展示的list
-    private List<GoodsVO> buildGoodsList(List<Goods> goods) {
+    private List<GoodsVO> buildGoodsList(List<GoodsPO> goods) {
         if (goods == null || goods.size() == 0) {
             return new ArrayList<>(0);
         }
 
         List<GoodsVO> result = new ArrayList<>();
-        for (Goods item : goods) {
+        for (GoodsPO item : goods) {
             GoodsVO g4list = buildGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private List<GoodsVO> buildNewGoodsList(List<Goods> goods) {
+    private List<GoodsVO> buildNewGoodsList(List<GoodsPO> goods) {
         if (goods == null || goods.size() == 0) {
             return new ArrayList<>(0);
         }
 
         List<GoodsVO> result = new ArrayList<>();
-        for (Goods item : goods) {
+        for (GoodsPO item : goods) {
             GoodsVO g4list = buildNewGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private GoodsVO buildNewGoods(Goods item){
+    private GoodsVO buildNewGoods(GoodsPO item){
         GoodsVO result = new GoodsVO();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
@@ -60,11 +59,11 @@ public class GoodsServiceImpl implements GoodsService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryDao.getOne(item.getCategoryId()));
+        result.setCategoryPO(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
         return result;
     }
-    private GoodsVO buildGoods(Goods item) {
+    private GoodsVO buildGoods(GoodsPO item) {
         GoodsVO result = new GoodsVO();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
@@ -72,7 +71,7 @@ public class GoodsServiceImpl implements GoodsService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryDao.getOne(item.getCategoryId()));
+        result.setCategoryPO(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
         String slide = item.getSlidePicture();
 
@@ -102,13 +101,13 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsVO> getAll(int pageSize, int pageIndex) {
-        Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(pageIndex * pageSize, pageSize));
+        Page<GoodsPO> goodsPage = goodsDao.findAll(PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsList(goodsPage.getContent());
     }
 
     @Override
     public List<GoodsVO> getByCategory(int categoryId, int pageSize, int pageIndex) {
-        Page<Goods> goodsPage = goodsDao.getByCategoryId(categoryId, PageRequest.of(pageIndex * pageSize, pageSize));
+        Page<GoodsPO> goodsPage = goodsDao.getByCategoryId(categoryId, PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsList(goodsPage.getContent());
     }
 
@@ -119,7 +118,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsVO> getByName(String goodsName, int pageSize, int pageIndex) {
-        Page<Goods> goodsPage = goodsDao.getByGoodsNameLike(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
+        Page<GoodsPO> goodsPage = goodsDao.getByGoodsNameLike(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
         System.out.println(goodsPage.getTotalElements());
         System.out.println(goodsPage.getTotalPages());
         return buildGoodsList(goodsPage.getContent());
@@ -127,18 +126,18 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void updateGradeById(int goodId, double addGrade) {
-        Goods goods = goodsDao.getOne(goodId);
-        int newRankNum = goods.getRankNum() + 1;
-        double newGrade = Double.parseDouble(String.format("%.3f", ((goods.getRankNum() * goods.getGrade() + addGrade) / newRankNum)));
-        goods.setRankNum(newRankNum);
-        goods.setGrade(newGrade);
+        GoodsPO goodsPO = goodsDao.getOne(goodId);
+        int newRankNum = goodsPO.getRankNum() + 1;
+        double newGrade = Double.parseDouble(String.format("%.3f", ((goodsPO.getRankNum() * goodsPO.getGrade() + addGrade) / newRankNum)));
+        goodsPO.setRankNum(newRankNum);
+        goodsPO.setGrade(newGrade);
         // save也可以更新操作,当entity定义主键时
-        goodsDao.save(goods);
+        goodsDao.save(goodsPO);
     }
 
     @Override
     public List<GoodsVO> getNewsByTime() {
-        Page<Goods> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createTime").descending()));
+        Page<GoodsPO> goodsPage = goodsDao.findAll(PageRequest.of(0, 9, Sort.by("createTime").descending()));
         return buildNewGoodsList(goodsPage.getContent());
     }
 }

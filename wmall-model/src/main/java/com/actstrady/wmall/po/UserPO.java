@@ -15,8 +15,8 @@ import java.util.Date;
  * @gitHub : https://github.com/ActStrady/wmall
  */
 @Data
-@Entity
-public class User {
+@Entity(name = "user")
+public class UserPO {
     /**
      * mysql 使用GenerationType.IDENTITY规则主键自增
      */

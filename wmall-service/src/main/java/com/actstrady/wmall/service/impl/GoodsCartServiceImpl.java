@@ -4,9 +4,9 @@ import com.actstrady.wmall.dao.CategoryDao;
 import com.actstrady.wmall.dao.EvaluateDao;
 import com.actstrady.wmall.dao.GoodsCartDao;
 import com.actstrady.wmall.dao.GoodsDao;
-import com.actstrady.wmall.po.Evaluate;
-import com.actstrady.wmall.po.Goods;
-import com.actstrady.wmall.po.GoodsCart;
+import com.actstrady.wmall.po.EvaluatePO;
+import com.actstrady.wmall.po.GoodsPO;
+import com.actstrady.wmall.po.GoodsCartPO;
 import com.actstrady.wmall.service.GoodsCartService;
 import com.actstrady.wmall.vo.GoodsCartVO;
 import org.springframework.data.domain.Page;
@@ -31,31 +31,31 @@ public class GoodsCartServiceImpl implements GoodsCartService {
         this.evaluateDao = evaluateDao;
     }
 
-    private List<GoodsCartVO> buildGoodsCartList(List<GoodsCart> goodsCarts) {
-        if (goodsCarts == null || goodsCarts.size() == 0) {
+    private List<GoodsCartVO> buildGoodsCartList(List<GoodsCartPO> goodsCartPOS) {
+        if (goodsCartPOS == null || goodsCartPOS.size() == 0) {
             return new ArrayList<>(0);
         }
 
         List<GoodsCartVO> result = new ArrayList<>();
-        for (GoodsCart item : goodsCarts) {
+        for (GoodsCartPO item : goodsCartPOS) {
             GoodsCartVO gList = buildGoodsCart(item);
             result.add(gList);
         }
         return result;
     }
 
-    private GoodsCartVO buildGoodsCart(GoodsCart goodsCart) {
+    private GoodsCartVO buildGoodsCart(GoodsCartPO goodsCartPO) {
         GoodsCartVO item = new GoodsCartVO();
-        item.setId(goodsCart.getId());
-        item.setUserId(goodsCart.getUserId());
-        item.setGoodsId(goodsCart.getGoodsId());
-        item.setNumber(goodsCart.getNumber());
-        item.setStatus(goodsCart.getStatus());
-        item.setCreateTime(goodsCart.getCreateTime());
-        Goods goodInfo = goodsDao.getOne(goodsCart.getGoodsId());
-        item.setGoods(goodInfo);
+        item.setId(goodsCartPO.getId());
+        item.setUserId(goodsCartPO.getUserId());
+        item.setGoodsId(goodsCartPO.getGoodsId());
+        item.setNumber(goodsCartPO.getNumber());
+        item.setStatus(goodsCartPO.getStatus());
+        item.setCreateTime(goodsCartPO.getCreateTime());
+        GoodsPO goodInfo = goodsDao.getOne(goodsCartPO.getGoodsId());
+        item.setGoodsPO(goodInfo);
         item.setParentCategoryId(categoryDao.getOne(goodInfo.getCategoryId()).getParentId());
-        Evaluate eList = evaluateDao.getByCartId(goodsCart.getId());
+        EvaluatePO eList = evaluateDao.getByCartId(goodsCartPO.getId());
         if (eList != null) {
             item.setEvaluateId(eList.getId());
         }
@@ -64,7 +64,7 @@ public class GoodsCartServiceImpl implements GoodsCartService {
 
     @Override
     public List<GoodsCartVO> getByUser(int userId, int status, int pageSize, int pageIndex) {
-        Page<GoodsCart> goodsPage = goodsCartDao.getByUserIdAndStatus(userId, status, PageRequest.of(pageIndex * pageSize, pageSize));
+        Page<GoodsCartPO> goodsPage = goodsCartDao.getByUserIdAndStatus(userId, status, PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsCartList(goodsPage.getContent());
     }
 
@@ -75,10 +75,10 @@ public class GoodsCartServiceImpl implements GoodsCartService {
 
     @Override
     public void updateById(int cartId, int number) {
-        GoodsCart goodsCart = goodsCartDao.getOne(cartId);
-        goodsCart.setNumber(number);
-        goodsCart.setStatus(1);
-        goodsCartDao.save(goodsCart);
+        GoodsCartPO goodsCartPO = goodsCartDao.getOne(cartId);
+        goodsCartPO.setNumber(number);
+        goodsCartPO.setStatus(1);
+        goodsCartDao.save(goodsCartPO);
     }
 
     @Override
@@ -88,21 +88,21 @@ public class GoodsCartServiceImpl implements GoodsCartService {
 
     @Override
     public void insertCartInfo(int userId, int goodsId, int number, int status) {
-        GoodsCart goodsCart = new GoodsCart();
-        goodsCart.setUserId(userId);
-        goodsCart.setGoodsId(goodsId);
-        goodsCart.setNumber(number);
-        goodsCart.setStatus(status);
-        goodsCart.setCreateTime(new Date());
-        goodsCartDao.save(goodsCart);
+        GoodsCartPO goodsCartPO = new GoodsCartPO();
+        goodsCartPO.setUserId(userId);
+        goodsCartPO.setGoodsId(goodsId);
+        goodsCartPO.setNumber(number);
+        goodsCartPO.setStatus(status);
+        goodsCartPO.setCreateTime(new Date());
+        goodsCartDao.save(goodsCartPO);
     }
 
     @Override
     public void addCartCountById(int cartId) {
-        GoodsCart goodsCart = goodsCartDao.getOne(cartId);
-        goodsCart.setNumber(goodsCart.getNumber() + 1);
-        goodsCart.setCreateTime(new Date());
-        goodsCartDao.save(goodsCart);
+        GoodsCartPO goodsCartPO = goodsCartDao.getOne(cartId);
+        goodsCartPO.setNumber(goodsCartPO.getNumber() + 1);
+        goodsCartPO.setCreateTime(new Date());
+        goodsCartDao.save(goodsCartPO);
     }
 
     /**
@@ -115,7 +115,7 @@ public class GoodsCartServiceImpl implements GoodsCartService {
      */
     @Override
     public List<GoodsCartVO> getPurchasedGoodByUserId(int userId, int pageSize, int pageIndex) {
-        Page<GoodsCart> goodsCartsPage = goodsCartDao.getByUserIdAndStatus(userId, 1, PageRequest.of(pageIndex * pageSize, pageSize));
+        Page<GoodsCartPO> goodsCartsPage = goodsCartDao.getByUserIdAndStatus(userId, 1, PageRequest.of(pageIndex * pageSize, pageSize));
         return buildGoodsCartList(goodsCartsPage.getContent());
     }
 }

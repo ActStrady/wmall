@@ -1,9 +1,9 @@
 package com.actstrady.wmall.web.controller;
 
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.UserPO;
 import com.actstrady.wmall.service.PreferService;
 import com.actstrady.wmall.service.UserService;
-import com.actstrady.wmall.vo.PreferList;
+import com.actstrady.wmall.vo.PreferVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +37,8 @@ public class UserController {
      * @return 成功就是用户的id，0表示失败
      */
     @PostMapping("login")
-    public int login(@RequestBody User userMod, HttpSession httpSession, Model model) {
-        User user = userService.login(userMod);
+    public int login(@RequestBody UserPO userMod, HttpSession httpSession, Model model) {
+        UserPO user = userService.login(userMod);
         if (user == null) {
             return 0;
         } else {
@@ -93,7 +93,7 @@ public class UserController {
      * @return 成功否
      */
     @PostMapping("register")
-    public Boolean register(@RequestBody User user) {
+    public Boolean register(@RequestBody UserPO user) {
         return userService.registered(user);
     }
 
@@ -105,8 +105,8 @@ public class UserController {
      */
     @GetMapping("checkPrefer")
     public boolean checkPrefer(HttpSession httpSession) {
-        int userId = ((User) httpSession.getAttribute("user")).getId();
-        List<PreferList> prefers = preferService.getByUserId(userId);
+        int userId = ((UserPO) httpSession.getAttribute("user")).getId();
+        List<PreferVO> prefers = preferService.getByUserId(userId);
         return prefers == null || prefers.size() == 0;
     }
 
@@ -117,9 +117,9 @@ public class UserController {
      * @param httpSession session
      */
     @PostMapping("addPrefer")
-    public void addPrefer(@RequestBody List<PreferList> arrList, HttpSession httpSession) {
-        int userId = ((User) httpSession.getAttribute("user")).getId();
-        for (PreferList arr : arrList) {
+    public void addPrefer(@RequestBody List<PreferVO> arrList, HttpSession httpSession) {
+        int userId = ((UserPO) httpSession.getAttribute("user")).getId();
+        for (PreferVO arr : arrList) {
             preferService.insertInfo(userId, arr.getCategoryId());
         }
     }

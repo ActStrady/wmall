@@ -1,6 +1,6 @@
 package com.actstrady.wmall.dao;
 
-import com.actstrady.wmall.po.HotGoods;
+import com.actstrady.wmall.po.HotGoodsPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @fileName : HotGoodsDao.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-public interface HotGoodsDao extends JpaRepository<HotGoods, Integer> {
+public interface HotGoodsDao extends JpaRepository<HotGoodsPO, Integer> {
 }

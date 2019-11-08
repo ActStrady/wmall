@@ -1,7 +1,7 @@
 package com.actstrady.wmall.service.impl;
 
 import com.actstrady.wmall.dao.UserDao;
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.UserPO;
 import com.actstrady.wmall.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(User user) {
+    public UserPO login(UserPO user) {
         return userDao.getByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 
@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean registered(User user) {
-        User saveUser = userDao.save(user);
+    public Boolean registered(UserPO user) {
+        UserPO saveUser = userDao.save(user);
         return saveUser != null;
     }
 }

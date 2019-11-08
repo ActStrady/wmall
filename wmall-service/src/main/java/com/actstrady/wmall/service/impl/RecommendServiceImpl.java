@@ -3,11 +3,10 @@ package com.actstrady.wmall.service.impl;
 import com.actstrady.wmall.dao.CategoryDao;
 import com.actstrady.wmall.dao.GoodsDao;
 import com.actstrady.wmall.dao.RecommendDao;
-import com.actstrady.wmall.po.Goods;
-import com.actstrady.wmall.po.Recommend;
+import com.actstrady.wmall.po.GoodsPO;
+import com.actstrady.wmall.po.RecommendPO;
 import com.actstrady.wmall.service.RecommendService;
 import com.actstrady.wmall.vo.GoodsVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,21 +24,21 @@ public class RecommendServiceImpl implements RecommendService {
         this.categoryDao = categoryDao;
     }
 
-    private List<GoodsVO> buildRecommendGoodsList(List<Recommend> recomendGoods) {
+    private List<GoodsVO> buildRecommendGoodsList(List<RecommendPO> recomendGoods) {
         if (recomendGoods == null || recomendGoods.size() == 0) {
             return new ArrayList<>(0);
         }
 
         List<GoodsVO> result = new ArrayList<>();
-        for (Recommend good : recomendGoods) {
-            Goods item = goodsDao.getOne(good.getGoodsId());
+        for (RecommendPO good : recomendGoods) {
+            GoodsPO item = goodsDao.getOne(good.getGoodsId());
             GoodsVO g4list = buildGoods(item);
             result.add(g4list);
         }
         return result;
     }
 
-    private GoodsVO buildGoods(Goods item) {
+    private GoodsVO buildGoods(GoodsPO item) {
         GoodsVO result = new GoodsVO();
         result.setId(item.getId());
         result.setName(item.getGoodsName());
@@ -47,7 +46,7 @@ public class RecommendServiceImpl implements RecommendService {
         result.setUrl(item.getUrl());
         result.setDescription(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryDao.getOne(item.getCategoryId()));
+        result.setCategoryPO(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());
         return result;
     }

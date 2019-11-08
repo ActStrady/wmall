@@ -1,6 +1,6 @@
 package com.actstrady.wmall.dao;
 
-import com.actstrady.wmall.po.Category;
+import com.actstrady.wmall.po.CategoryPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,8 +12,8 @@ import java.util.List;
  * @fileName : CategoryDao.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-public interface CategoryDao extends JpaRepository<Category, Integer> {
-    List<Category> getByParentIdNull();
+public interface CategoryDao extends JpaRepository<CategoryPO, Integer> {
+    List<CategoryPO> getByParentIdNull();
 
     /**
      * nativeQuery = true 表示使用原生sql
@@ -24,5 +24,5 @@ public interface CategoryDao extends JpaRepository<Category, Integer> {
     @Query(value = "select distinct `group` from category where parentid = ?1", nativeQuery = true)
     List<String> getGroupByParentId(Integer parentId);
 
-    List<Category> getByParentIdAndGroup(Integer parentId, String group);
+    List<CategoryPO> getByParentIdAndGroup(Integer parentId, String group);
 }

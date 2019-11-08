@@ -1,6 +1,6 @@
 package com.actstrady.wmall.dao;
 
-import com.actstrady.wmall.po.Goods;
+import com.actstrady.wmall.po.GoodsPO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @fileName : Goods.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-public interface GoodsDao extends JpaRepository<Goods, Integer> {
-    Page<Goods> getByCategoryId(Integer categoryId, Pageable pageable);
+public interface GoodsDao extends JpaRepository<GoodsPO, Integer> {
+    Page<GoodsPO> getByCategoryId(Integer categoryId, Pageable pageable);
 
-    Page<Goods> getByGoodsNameLike(String goodsName, Pageable pageable);
+    Page<GoodsPO> getByGoodsNameLike(String goodsName, Pageable pageable);
 }

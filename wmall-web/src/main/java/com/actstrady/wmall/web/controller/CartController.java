@@ -1,6 +1,6 @@
 package com.actstrady.wmall.web.controller;
 
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.UserPO;
 import com.actstrady.wmall.service.GoodsCartService;
 import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
@@ -33,7 +33,7 @@ public class CartController {
      */
     @GetMapping("cartView/{pageSize}/{pageIndex}")
     public Result cartView(@PathVariable("pageSize") int pageSize, @PathVariable("pageIndex") int pageIndex, HttpSession httpSession) {
-        User user = (User) httpSession.getAttribute("user");
+        UserPO user = (UserPO) httpSession.getAttribute("user");
         int userId = user.getId();
         // 获取购物车列表
         List<GoodsCartVO> carts = goodsCartService.getByUser(userId, 0, pageSize, pageIndex);
@@ -71,7 +71,7 @@ public class CartController {
     @PostMapping("addCart")
     public boolean addCart(@RequestBody GoodsCartVO cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
-            User user = (User) httpSession.getAttribute("user");
+            UserPO user = (UserPO) httpSession.getAttribute("user");
             int userId = user.getId();
             // 是否存在
             List<GoodsCartVO> isExits = goodsCartService.getByInfo(userId, cart.getGoodsId(), 0);
@@ -90,7 +90,7 @@ public class CartController {
     @PostMapping("buyGoodQuick")
     public boolean buyGoodQuick(@RequestBody GoodsCartVO cart, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
-            User user = (User) httpSession.getAttribute("user");
+            UserPO user = (UserPO) httpSession.getAttribute("user");
             int userId = user.getId();
             goodsCartService.insertCartInfo(userId, cart.getGoodsId(), cart.getNumber(), 1);
             return true;

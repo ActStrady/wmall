@@ -1,10 +1,10 @@
 package com.actstrady.wmall.web.controller;
 
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.UserPO;
 import com.actstrady.wmall.service.*;
 import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
-import com.actstrady.wmall.vo.EvaluateList;
+import com.actstrady.wmall.vo.EvaluateVO;
 import com.actstrady.wmall.vo.GoodsVO;
 import com.actstrady.wmall.vo.ParentCategory;
 import com.alibaba.fastjson.JSON;
@@ -66,9 +66,9 @@ public class HomeController {
         homeMap.put("newsGoods", newsGoods);
 
         // 通过用户来推荐
-        User user = new User();
+        UserPO user = new UserPO();
         if (httpSession.getAttribute(Constant.USER) != null) {
-            user = (User) httpSession.getAttribute(Constant.USER);
+            user = (UserPO) httpSession.getAttribute(Constant.USER);
             int userId = user.getId();
             // 个性化推荐
             List<GoodsVO> recommendGoods = recommendService.getByUserId(userId);
@@ -143,7 +143,8 @@ public class HomeController {
         Map<String, Object> productMap = new HashMap<>();
         GoodsVO goods = goodsService.getById(goodsId);
         // 评价信息
-        List<EvaluateList> evaluates = evaluateService.getByGood(goodsId, 10, 0);
+        List<EvaluateVO> evaluates = evaluateService.getByGood(goodsId, 10, 0);
+
         // 同类型商品
         List<GoodsVO> similarGoods = similarGoodsService.getByGoodsId(goodsId);
         productMap.put("goods", goods);

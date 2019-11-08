@@ -1,13 +1,13 @@
 package com.actstrady.wmall.web.controller;
 
-import com.actstrady.wmall.po.Evaluate;
-import com.actstrady.wmall.po.User;
+import com.actstrady.wmall.po.EvaluatePO;
+import com.actstrady.wmall.po.UserPO;
 import com.actstrady.wmall.service.EvaluateService;
 import com.actstrady.wmall.service.GoodsCartService;
 import com.actstrady.wmall.service.GoodsService;
 import com.actstrady.wmall.utils.Constant;
 import com.actstrady.wmall.utils.Result;
-import com.actstrady.wmall.vo.EvaluateList;
+import com.actstrady.wmall.vo.EvaluateVO;
 import com.actstrady.wmall.vo.GoodsCartVO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class OrderController {
     public Result orderView(HttpSession httpSession,
                             @PathVariable("pageSize") int pageSize,
                             @PathVariable("pageIndex") int pageIndex) {
-        User user = (User) httpSession.getAttribute("user");
+        UserPO user = (UserPO) httpSession.getAttribute("user");
         int userId = user.getId();
         // 已购列表
         List<GoodsCartVO> carts = goodsCartService.getPurchasedGoodByUserId(userId, pageSize, pageIndex);
@@ -62,12 +62,12 @@ public class OrderController {
      * @return
      */
     @GetMapping("addEvaluation")
-    public boolean addEvaluation(@RequestBody Evaluate data, HttpSession httpSession) {
+    public boolean addEvaluation(@RequestBody EvaluatePO data, HttpSession httpSession) {
         if (httpSession.getAttribute("user") != null) {
-            int userId = ((User) httpSession.getAttribute("user")).getId();
+            int userId = ((UserPO) httpSession.getAttribute("user")).getId();
             data.setUserId(userId);
-            Evaluate evaluate = evaluateService.insertEvaluateInfo(data);
-            if (evaluate == null) {
+            EvaluatePO evaluatePO = evaluateService.insertEvaluateInfo(data);
+            if (evaluatePO == null) {
                 return false;
             } else {
                 // 更新评价
@@ -79,8 +79,8 @@ public class OrderController {
     }
 
     @GetMapping("getByCartId")
-    public EvaluateList getByCartId(@RequestBody Evaluate data) {
-        EvaluateList result = evaluateService.getByCartId(data.getCartId());
+    public EvaluateVO getByCartId(@RequestBody EvaluatePO data) {
+        EvaluateVO result = evaluateService.getByCartId(data.getCartId());
         return result;
     }
 }

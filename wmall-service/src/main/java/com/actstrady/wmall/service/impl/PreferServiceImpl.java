@@ -1,10 +1,9 @@
 package com.actstrady.wmall.service.impl;
 
 import com.actstrady.wmall.dao.PreferDao;
-import com.actstrady.wmall.po.Prefer;
+import com.actstrady.wmall.po.PreferPO;
 import com.actstrady.wmall.service.PreferService;
-import com.actstrady.wmall.vo.PreferList;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.actstrady.wmall.vo.PreferVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,39 +18,39 @@ public class PreferServiceImpl implements PreferService {
         this.preferDao = preferDao;
     }
 
-    private List<PreferList> buildPreferList(List<Prefer> prefers){
-        if(prefers==null || prefers.size()==0){
-            return new ArrayList<PreferList>(0);
+    private List<PreferVO> buildPreferList(List<PreferPO> preferPOS){
+        if(preferPOS ==null || preferPOS.size()==0){
+            return new ArrayList<PreferVO>(0);
         }
 
-        List<PreferList> result = new ArrayList<>();
-        for(Prefer item:prefers){
-            PreferList glist = buildPrefer(item);
+        List<PreferVO> result = new ArrayList<>();
+        for(PreferPO item: preferPOS){
+            PreferVO glist = buildPrefer(item);
             result.add(glist);
         }
         return result;
     }
 
-    private PreferList buildPrefer(Prefer prefer){
-        PreferList item = new PreferList();
-        item.setUserId(prefer.getUserId());
-        item.setCategoryId(prefer.getCategoryId());
-        item.setId(prefer.getId());
-        item.setCreateTime(prefer.getCreateTime());
+    private PreferVO buildPrefer(PreferPO preferPO){
+        PreferVO item = new PreferVO();
+        item.setUserId(preferPO.getUserId());
+        item.setCategoryId(preferPO.getCategoryId());
+        item.setId(preferPO.getId());
+        item.setCreateTime(preferPO.getCreateTime());
       return item;
     }
 
     @Override
-    public List<PreferList> getByUserId(int userId){
+    public List<PreferVO> getByUserId(int userId){
         return buildPreferList(preferDao.getByUserId(userId));
     }
 
     @Override
     public void insertInfo(int userId,int categoryId){
-        Prefer prefer = new Prefer();
-        prefer.setUserId(userId);
-        prefer.setCategoryId(categoryId);
-        prefer.setCreateTime(new Date());
-        preferDao.save(prefer);
+        PreferPO preferPO = new PreferPO();
+        preferPO.setUserId(userId);
+        preferPO.setCategoryId(categoryId);
+        preferPO.setCreateTime(new Date());
+        preferDao.save(preferPO);
     }
 }

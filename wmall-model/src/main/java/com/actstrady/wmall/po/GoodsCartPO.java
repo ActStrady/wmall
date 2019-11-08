@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @Entity(name = "goodscart")
-public class GoodsCart {
+public class GoodsCartPO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

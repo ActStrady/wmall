@@ -1,6 +1,6 @@
 package com.actstrady.wmall.dao;
 
-import com.actstrady.wmall.po.Recommend;
+import com.actstrady.wmall.po.RecommendPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,6 +11,6 @@ import java.util.List;
  * @fileName : RecommendDao.java
  * @gitHub : https://github.com/ActStrady/wmall
  */
-public interface RecommendDao extends JpaRepository<Recommend, Integer> {
-    List<Recommend> getByUserId(Integer userId);
+public interface RecommendDao extends JpaRepository<RecommendPO, Integer> {
+    List<RecommendPO> getByUserId(Integer userId);
 }
