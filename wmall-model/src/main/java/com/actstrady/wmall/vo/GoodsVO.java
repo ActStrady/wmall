@@ -11,15 +11,15 @@ import java.util.List;
 @Data
 public class GoodsVO {
     private Integer id;
-    private String name;
-    private Double price;
+    private String goodsName;
+    private Double goodsPrice;
     private String url;
-    private String description;
+    private String goodsIntroduce;
     private Integer categoryId;
-    private String slide_1;
-    private String slide_2;
-    private String slide_3;
-    private String slide_4;
+    private String slide1;
+    private String slide2;
+    private String slide3;
+    private String slide4;
     private CategoryPO category;
     private List<String> detailPicture;
 }

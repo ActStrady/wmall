@@ -18,35 +18,34 @@ public class PreferServiceImpl implements PreferService {
         this.preferDao = preferDao;
     }
 
-    private List<PreferVO> buildPreferList(List<PreferPO> preferPOS){
-        if(preferPOS ==null || preferPOS.size()==0){
+    private List<PreferVO> buildPreferList(List<PreferPO> preferPos) {
+        if (preferPos == null || preferPos.size() == 0) {
             return new ArrayList<PreferVO>(0);
         }
-
         List<PreferVO> result = new ArrayList<>();
-        for(PreferPO item: preferPOS){
+        for (PreferPO item : preferPos) {
             PreferVO glist = buildPrefer(item);
             result.add(glist);
         }
         return result;
     }
 
-    private PreferVO buildPrefer(PreferPO preferPO){
+    private PreferVO buildPrefer(PreferPO preferPO) {
         PreferVO item = new PreferVO();
         item.setUserId(preferPO.getUserId());
         item.setCategoryId(preferPO.getCategoryId());
         item.setId(preferPO.getId());
         item.setCreateTime(preferPO.getCreateTime());
-      return item;
+        return item;
     }
 
     @Override
-    public List<PreferVO> getByUserId(int userId){
+    public List<PreferVO> getByUserId(int userId) {
         return buildPreferList(preferDao.getByUserId(userId));
     }
 
     @Override
-    public void insertInfo(int userId,int categoryId){
+    public void insertInfo(int userId, int categoryId) {
         PreferPO preferPO = new PreferPO();
         preferPO.setUserId(userId);
         preferPO.setCategoryId(categoryId);

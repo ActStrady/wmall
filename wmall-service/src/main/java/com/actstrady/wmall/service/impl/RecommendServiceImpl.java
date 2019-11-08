@@ -41,10 +41,10 @@ public class RecommendServiceImpl implements RecommendService {
     private GoodsVO buildGoods(GoodsPO item) {
         GoodsVO result = new GoodsVO();
         result.setId(item.getId());
-        result.setName(item.getGoodsName());
-        result.setPrice(item.getGoodsPrice());
+        result.setGoodsName(item.getGoodsName());
+        result.setGoodsPrice(item.getGoodsPrice());
         result.setUrl(item.getUrl());
-        result.setDescription(item.getGoodsIntroduce());
+        result.setGoodsIntroduce(item.getGoodsIntroduce());
         result.setCategoryId(item.getCategoryId());
         result.setCategory(categoryDao.getOne(item.getCategoryId()));
         result.setCategoryId(item.getCategoryId());

@@ -55,6 +55,10 @@ public class CartController {
         }
     }
 
+    /**
+     * 购物
+     * @param arr 购买参数
+     */
     @PostMapping("buyGoods")
     public void buyGoods(@RequestBody List<GoodsCartVO> arr) {
         for (GoodsCartVO cart : arr) {

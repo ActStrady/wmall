@@ -55,13 +55,16 @@ public class GoodsServiceImpl implements GoodsService {
         //处理滑动图片
         slide = slide.substring(1, slide.length() - 1);
         String[] sp = slide.split("\\|");
-        goodsVo.setSlide_1(sp[0].substring(1, sp[0].length() - 1));
-        goodsVo.setSlide_2(sp[1].substring(1, sp[1].length() - 1));
-        goodsVo.setSlide_3(sp[2].substring(1, sp[2].length() - 1));
-        goodsVo.setSlide_4(sp[3].substring(1, sp[3].length() - 1));
+        goodsVo.setSlide1(sp[0].substring(1, sp[0].length() - 1));
+        goodsVo.setSlide2(sp[1].substring(1, sp[1].length() - 1));
+        goodsVo.setSlide3(sp[2].substring(1, sp[2].length() - 1));
+        goodsVo.setSlide4(sp[3].substring(1, sp[3].length() - 1));
+        System.out.println(goodsPo);
+        System.out.println(goodsVo);
         //处理detail图片
-        if (goodsVo.getDetailPicture() != null) {
-            String details = goodsPo.getDetailPicture();
+        if (goodsPo.getDetailPictures() != null) {
+            String details = goodsPo.getDetailPictures();
+            System.out.println(details);
             List<String> sList = new ArrayList<>();
             if (details.length() > 2) {
                 details = details.substring(1, details.length() - 1);
