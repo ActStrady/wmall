@@ -25,9 +25,9 @@ public class face {
     // webapi 接口地址
     private static final String WEBWFV_URL = "http://api.xfyun.cn/v1/service/v1/image_identify/face_verification";
     // 应用ID (必须为webapi类型应用，并开通人脸比对服务，参考帖子如何创建一个webapi应用：http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=36481)
-    private static final String APPID = "5cf0c5e6";
+    private static final String APPID = "5cf0c5ca";
     // 接口密钥(webapi类型应用开通人脸比对服务后，控制台--我的应用---人脸比对---相应服务的apikey)
-    private static final String API_KEY = "e8b246b0adcad559db41d362f9924577";
+    private static final String API_KEY = "87510135e8166d2f63695cce4c6d8bc7";
     // 图片地址
     private static final String FILE_PATH1 = "D://hh.png";
     private static final String FILE_PATH2 = "D://ll.png";

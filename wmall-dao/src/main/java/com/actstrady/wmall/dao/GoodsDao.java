@@ -14,5 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface GoodsDao extends JpaRepository<GoodsPO, Integer> {
     Page<GoodsPO> getByCategoryId(Integer categoryId, Pageable pageable);
 
-    Page<GoodsPO> getByGoodsNameLike(String goodsName, Pageable pageable);
+    Page<GoodsPO> getByGoodsNameContaining(String goodsName, Pageable pageable);
 }

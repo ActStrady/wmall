@@ -20,7 +20,6 @@ public interface PreferService {
      * 插入一条用户喜欢数据
      * @param userId 用户编号
      * @param categoryId 父级分类编号
-     * @return 喜好列表
      */
     public void insertInfo(int userId, int categoryId);
 

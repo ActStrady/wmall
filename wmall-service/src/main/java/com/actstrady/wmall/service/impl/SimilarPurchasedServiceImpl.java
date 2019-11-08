@@ -6,6 +6,7 @@ import com.actstrady.wmall.dao.SimilarPurchasedDao;
 import com.actstrady.wmall.po.GoodsPO;
 import com.actstrady.wmall.po.SimilarPurchasedPO;
 import com.actstrady.wmall.service.SimilarPurchasedService;
+import com.actstrady.wmall.utils.ListCopy;
 import com.actstrady.wmall.vo.GoodsVO;
 import org.springframework.stereotype.Service;
 
@@ -17,37 +18,27 @@ public class SimilarPurchasedServiceImpl implements SimilarPurchasedService {
     private final GoodsDao goodsDao;
     private final SimilarPurchasedDao similarPurchasedDao;
     private final CategoryDao categoryDao;
+    private final ListCopy<GoodsPO, GoodsVO> listCopy;
 
-    public SimilarPurchasedServiceImpl(GoodsDao goodsDao, SimilarPurchasedDao similarPurchasedDao, CategoryDao categoryDao) {
+    public SimilarPurchasedServiceImpl(GoodsDao goodsDao, SimilarPurchasedDao similarPurchasedDao, CategoryDao categoryDao, ListCopy<GoodsPO, GoodsVO> listCopy) {
         this.goodsDao = goodsDao;
         this.similarPurchasedDao = similarPurchasedDao;
         this.categoryDao = categoryDao;
+        this.listCopy = listCopy;
     }
 
 
-    private List<GoodsVO> buildSimilarPurchasedList(List<SimilarPurchasedPO> goods) {
-        if (goods == null || goods.size() == 0) {
+    private List<GoodsVO> buildSimilarPurchasedList(List<SimilarPurchasedPO> similarPurchaseds) {
+        if (similarPurchaseds == null || similarPurchaseds.size() == 0) {
             return new ArrayList<>(0);
         }
-
         List<GoodsVO> result = new ArrayList<>();
-        for (SimilarPurchasedPO good : goods) {
-            GoodsPO item = goodsDao.getOne(good.getSimilarGoodsId());
-            GoodsVO g4list = buildGoods(item);
-            result.add(g4list);
+        for (SimilarPurchasedPO similarPurchased : similarPurchaseds) {
+            GoodsPO goodsPo = goodsDao.getOne(similarPurchased.getSimilarGoodsId());
+            GoodsVO goodsVo = listCopy.beanBuild(goodsPo, GoodsVO.class);
+            goodsVo.setCategory(categoryDao.getOne(goodsVo.getCategoryId()));
+            result.add(goodsVo);
         }
-        return result;
-    }
-
-    private GoodsVO buildGoods(GoodsPO item) {
-        GoodsVO result = new GoodsVO();
-        result.setId(item.getId());
-        result.setGoodsName(item.getGoodsName());
-        result.setGoodsPrice(item.getGoodsPrice());
-        result.setUrl(item.getUrl());
-        result.setGoodsIntroduce(item.getGoodsIntroduce());
-        result.setCategoryId(item.getCategoryId());
-        result.setCategory(categoryDao.getOne(item.getCategoryId()));
         return result;
     }
 

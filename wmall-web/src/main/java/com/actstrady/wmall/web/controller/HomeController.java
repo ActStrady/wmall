@@ -128,7 +128,7 @@ public class HomeController {
         List<GoodsVO> goods = goodsService.getByName(content, pageSize, pageIndex);
         result.setCode(Constant.ZERO);
         result.setStatus(Constant.ZERO_SHORT);
-        result.setData(JSON.toJSONString(goods));
+        result.setData(JSON.toJSONString(JSON.toJSON(goods)));
         return result;
     }
 

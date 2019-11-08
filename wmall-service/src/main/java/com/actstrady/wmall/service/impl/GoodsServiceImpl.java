@@ -81,7 +81,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<GoodsVO> getByName(String goodsName, int pageSize, int pageIndex) {
         System.out.println(goodsName);
-        Page<GoodsPO> goodsPage = goodsDao.getByGoodsNameLike(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
+        Page<GoodsPO> goodsPage = goodsDao.getByGoodsNameContaining(goodsName, PageRequest.of(pageIndex * pageSize, pageSize));
         System.out.println(goodsPage);
         List<GoodsVO> goodsVos = listCopy.listBuild(goodsPage.getContent(), GoodsVO.class);
         for (GoodsVO goodsVo : goodsVos) {
