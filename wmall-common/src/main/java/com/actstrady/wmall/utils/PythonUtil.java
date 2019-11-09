@@ -9,7 +9,6 @@ public class PythonUtil {
         try {
             // 进行一个python的调用
             String exe = "python";
-            // String command = "D:\\teacher\\javaee\\project\\bookstore\\personal_recommendation_func.py";
             String userId = String.valueOf(userID);
             String[] cmdArr = new String[]{exe, command, userId};
             Process process = Runtime.getRuntime().exec(cmdArr);
